@@ -1,0 +1,49 @@
+{
+  "name": "MedicalHistory",
+  "fields": [
+    {
+      "fieldName": "comment",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "createDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastUpdateDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": [
+        "required"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "medicalHistoryConfig",
+      "otherEntityRelationshipName": "medicalHistory",
+      "relationshipName": "medicalHistory"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "record",
+      "otherEntityRelationshipName": "medicalHistory",
+      "relationshipName": "record",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201019013049",
+  "entityTableName": "medical_history",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

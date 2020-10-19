@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="medicalHistoryConfig">
+            <h2><span>Medical History Config</span> {{ medicalHistoryConfig.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Key</span></dt>
+                <dd>
+                    <span>{{ medicalHistoryConfig.key }}</span>
+                </dd>
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{ medicalHistoryConfig.description }}</span>
+                </dd>
+                <dt><span>Create Date</span></dt>
+                <dd>
+                    <span>{{ medicalHistoryConfig.createDate }}</span>
+                </dd>
+                <dt><span>Last Update Date</span></dt>
+                <dd>
+                    <span>{{ medicalHistoryConfig.lastUpdateDate }}</span>
+                </dd>
+                <dt><span>Medical History</span></dt>
+                <dd>
+                    <div *ngIf="medicalHistoryConfig.medicalHistory">
+                        <a [routerLink]="['/medical-history', medicalHistoryConfig.medicalHistory?.id, 'view']">{{ medicalHistoryConfig.medicalHistory?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/medical-history-config', medicalHistoryConfig.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

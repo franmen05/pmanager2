@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="medicalHistory">
+            <h2><span>Medical History</span> {{ medicalHistory.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Comment</span></dt>
+                <dd>
+                    <span>{{ medicalHistory.comment }}</span>
+                </dd>
+                <dt><span>Create Date</span></dt>
+                <dd>
+                    <span>{{ medicalHistory.createDate }}</span>
+                </dd>
+                <dt><span>Last Update Date</span></dt>
+                <dd>
+                    <span>{{ medicalHistory.lastUpdateDate }}</span>
+                </dd>
+                <dt><span>Record</span></dt>
+                <dd>
+                    <div *ngIf="medicalHistory.record">
+                        <a [routerLink]="['/record', medicalHistory.record?.id, 'view']">{{ medicalHistory.record?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/medical-history', medicalHistory.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

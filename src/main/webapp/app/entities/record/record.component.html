@@ -1,0 +1,77 @@
+<div>
+    <h2 id="page-heading">
+        <span>Records</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-record" [routerLink]="['/record/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Record
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="records?.length === 0">
+        <span>No records found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="records && records.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Description</span></th>
+                    <th scope="col" ><span>Create Date</span></th>
+                    <th scope="col" ><span>Last Update Date</span></th>
+                    <th scope="col" ><span>Patient</span></th>
+                    <th scope="col" ><span>Patient</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let record of records ;trackBy: trackId">
+                    <td><a [routerLink]="['/record', record.id, 'view']">{{ record.id }}</a></td>
+                    <td>{{ record.description }}</td>
+                    <td>{{ record.createDate | date:'medium' }}</td>
+                    <td>{{ record.lastUpdateDate | date:'medium' }}</td>
+                    <td>
+                        <div *ngIf="record.patient">
+                            <a [routerLink]="['/patient', record.patient?.id, 'view']" >{{ record.patient?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="record.patient">
+                            <a [routerLink]="['/patient', record.patient?.id, 'view']" >{{ record.patient?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/record', record.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/record', record.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(record)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
