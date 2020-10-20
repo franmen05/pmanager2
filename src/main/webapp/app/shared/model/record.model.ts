@@ -11,7 +11,6 @@ export interface IRecord {
   presciptions?: IPrescription[];
   medicalHistories?: IMedicalHistory[];
   patient?: IPatient;
-  patient?: IPatient;
 }
 
 export class Record implements IRecord {
@@ -22,7 +21,6 @@ export class Record implements IRecord {
     public lastUpdateDate?: Moment,
     public presciptions?: IPrescription[],
     public medicalHistories?: IMedicalHistory[],
-    public patient?: IPatient,
     public patient?: IPatient
   ) {}
 }

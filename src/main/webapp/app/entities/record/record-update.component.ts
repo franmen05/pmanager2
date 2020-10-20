@@ -26,7 +26,6 @@ export class RecordUpdateComponent implements OnInit {
     createDate: [],
     lastUpdateDate: [null, [Validators.required]],
     patient: [],
-    patient: [],
   });
 
   constructor(
@@ -57,7 +56,6 @@ export class RecordUpdateComponent implements OnInit {
       createDate: record.createDate ? record.createDate.format(DATE_TIME_FORMAT) : null,
       lastUpdateDate: record.lastUpdateDate ? record.lastUpdateDate.format(DATE_TIME_FORMAT) : null,
       patient: record.patient,
-      patient: record.patient,
     });
   }
 
@@ -84,7 +82,6 @@ export class RecordUpdateComponent implements OnInit {
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      patient: this.editForm.get(['patient'])!.value,
       patient: this.editForm.get(['patient'])!.value,
     };
   }

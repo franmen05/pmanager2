@@ -31,9 +31,6 @@
             <column name="patient_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="patient_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="turn" columnName="create_date" columnDataType="datetime"/>

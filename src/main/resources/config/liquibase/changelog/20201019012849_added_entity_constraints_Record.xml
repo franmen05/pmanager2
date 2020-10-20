@@ -7,12 +7,6 @@
         Added the constraints for entity Record.
     -->
     <changeSet id="20201019012849-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="patient_id"
-                                 baseTableName="record"
-                                 constraintName="fk_record_patient_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="patient"/>
 
         <addForeignKeyConstraint baseColumnNames="patient_id"
                                  baseTableName="record"
