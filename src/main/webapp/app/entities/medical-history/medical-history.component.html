@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span>Medical Histories</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-medical-history" [routerLink]="['/medical-history/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Medical History
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="medicalHistories?.length === 0">
+        <span>No medicalHistories found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="medicalHistories && medicalHistories.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Comment</span></th>
+                    <th scope="col" ><span>Create Date</span></th>
+                    <th scope="col" ><span>Last Update Date</span></th>
+                    <th scope="col" ><span>Record</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let medicalHistory of medicalHistories ;trackBy: trackId">
+                    <td><a [routerLink]="['/medical-history', medicalHistory.id, 'view']">{{ medicalHistory.id }}</a></td>
+                    <td>{{ medicalHistory.comment }}</td>
+                    <td>{{ medicalHistory.createDate | date:'medium' }}</td>
+                    <td>{{ medicalHistory.lastUpdateDate | date:'medium' }}</td>
+                    <td>
+                        <div *ngIf="medicalHistory.record">
+                            <a [routerLink]="['/record', medicalHistory.record?.id, 'view']" >{{ medicalHistory.record?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/medical-history', medicalHistory.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/medical-history', medicalHistory.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(medicalHistory)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

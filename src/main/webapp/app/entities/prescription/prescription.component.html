@@ -1,0 +1,71 @@
+<div>
+    <h2 id="page-heading">
+        <span>Prescriptions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-prescription" [routerLink]="['/prescription/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Prescription
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="prescriptions?.length === 0">
+        <span>No prescriptions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="prescriptions && prescriptions.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr>
+                    <th scope="col" ><span>ID</span></th>
+                    <th scope="col" ><span>Description</span></th>
+                    <th scope="col" ><span>Create Date</span></th>
+                    <th scope="col" ><span>Last Update Date</span></th>
+                    <th scope="col" ><span>Record</span></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let prescription of prescriptions ;trackBy: trackId">
+                    <td><a [routerLink]="['/prescription', prescription.id, 'view']">{{ prescription.id }}</a></td>
+                    <td>{{ prescription.description }}</td>
+                    <td>{{ prescription.createDate | date:'medium' }}</td>
+                    <td>{{ prescription.lastUpdateDate | date:'medium' }}</td>
+                    <td>
+                        <div *ngIf="prescription.record">
+                            <a [routerLink]="['/record', prescription.record?.id, 'view']" >{{ prescription.record?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/prescription', prescription.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/prescription', prescription.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(prescription)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
