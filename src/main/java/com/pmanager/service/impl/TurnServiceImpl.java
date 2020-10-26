@@ -1,16 +1,15 @@
 package com.pmanager.service.impl;
 
-import com.pmanager.service.TurnService;
 import com.pmanager.domain.Turn;
+import com.pmanager.domain.enumeration.Status;
 import com.pmanager.repository.TurnRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.pmanager.service.TurnService;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service Implementation for managing {@link Turn}.
@@ -18,7 +17,6 @@ import java.util.Optional;
 @Service
 @Transactional
 public class TurnServiceImpl implements TurnService {
-
     private final Logger log = LoggerFactory.getLogger(TurnServiceImpl.class);
 
     private final TurnRepository turnRepository;
@@ -39,7 +37,6 @@ public class TurnServiceImpl implements TurnService {
         log.debug("Request to get all Turns");
         return turnRepository.findAll();
     }
-
 
     @Override
     @Transactional(readOnly = true)

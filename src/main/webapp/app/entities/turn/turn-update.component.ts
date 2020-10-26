@@ -25,7 +25,6 @@ export class TurnUpdateComponent implements OnInit {
     position: [null, [Validators.required]],
     createDate: [],
     lastUpdateDate: [null, [Validators.required]],
-    status: [null, [Validators.required]],
     patient: [],
   });
 
@@ -84,7 +83,6 @@ export class TurnUpdateComponent implements OnInit {
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      status: this.editForm.get(['status'])!.value,
       patient: this.editForm.get(['patient'])!.value,
     };
   }

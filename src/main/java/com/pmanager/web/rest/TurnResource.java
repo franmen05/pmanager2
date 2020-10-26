@@ -1,22 +1,21 @@
 package com.pmanager.web.rest;
 
 import com.pmanager.domain.Turn;
+import com.pmanager.domain.enumeration.Status;
 import com.pmanager.service.TurnService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.pmanager.domain.Turn}.
@@ -24,7 +23,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class TurnResource {
-
     private final Logger log = LoggerFactory.getLogger(TurnResource.class);
 
     private static final String ENTITY_NAME = "turn";
@@ -51,8 +49,10 @@ public class TurnResource {
         if (turn.getId() != null) {
             throw new BadRequestAlertException("A new turn cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        turn.setStatus(Status.REGISTER);
         Turn result = turnService.save(turn);
-        return ResponseEntity.created(new URI("/api/turns/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/turns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -73,7 +73,8 @@ public class TurnResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Turn result = turnService.save(turn);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, turn.getId().toString()))
             .body(result);
     }
@@ -112,6 +113,9 @@ public class TurnResource {
     public ResponseEntity<Void> deleteTurn(@PathVariable Long id) {
         log.debug("REST request to delete Turn : {}", id);
         turnService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }
