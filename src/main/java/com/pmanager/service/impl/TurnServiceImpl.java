@@ -40,12 +40,12 @@ public class TurnServiceImpl implements TurnService {
             //            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             //        String myDate = date.format(dtf);
 
-            val instant = date.toInstant(ZoneOffset.ofHours(-4));
+            val instant = date.toInstant(ZoneOffset.ofHours(0));
             val turns = turnRepository.findAllByCreateDateAfter(instant);
             val lastTurn = turns.stream().max(Comparator.comparing(Turn::getCreateDate));
             //        var tun=turns.stream().max((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
 
-            lastTurn.ifPresent(t -> turn.setPosition(t.getPosition() + 1));
+            if (lastTurn.isPresent()) turn.setPosition(lastTurn.get().getPosition() + 1); else turn.setPosition(1);
         }
 
         return turnRepository.save(turn);
