@@ -4,8 +4,14 @@ import com.pmanager.domain.Turn;
 import com.pmanager.domain.enumeration.Status;
 import com.pmanager.repository.TurnRepository;
 import com.pmanager.service.TurnService;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,6 +34,20 @@ public class TurnServiceImpl implements TurnService {
     @Override
     public Turn save(Turn turn) {
         log.debug("Request to save Turn : {}", turn);
+
+        if (turn.getStatus() == Status.REGISTER) {
+            LocalDateTime date = LocalDateTime.now().withHour(1);
+            //            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            //        String myDate = date.format(dtf);
+
+            val instant = date.toInstant(ZoneOffset.ofHours(-4));
+            val turns = turnRepository.findAllByCreateDateAfter(instant);
+            val lastTurn = turns.stream().max(Comparator.comparing(Turn::getCreateDate));
+            //        var tun=turns.stream().max((o1, o2) -> o1.getCreateDate().compareTo(o2.getCreateDate()));
+
+            lastTurn.ifPresent(t -> turn.setPosition(t.getPosition() + 1));
+        }
+
         return turnRepository.save(turn);
     }
 

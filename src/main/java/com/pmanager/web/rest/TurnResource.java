@@ -46,11 +46,9 @@ public class TurnResource {
     @PostMapping("/turns")
     public ResponseEntity<Turn> createTurn(@Valid @RequestBody Turn turn) throws URISyntaxException {
         log.debug("REST request to save Turn : {}", turn);
-        if (turn.getId() != null) {
-            throw new BadRequestAlertException("A new turn cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-        turn.setStatus(Status.REGISTER);
-        Turn result = turnService.save(turn);
+        if (turn.getId() != null) throw new BadRequestAlertException("A new turn cannot already have an ID", ENTITY_NAME, "idexists");
+
+        Turn result = turnService.save(turn.create());
         return ResponseEntity
             .created(new URI("/api/turns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))

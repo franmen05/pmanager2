@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * A Turn.
@@ -23,6 +24,7 @@ public class Turn implements Serializable {
     @Column(name = "position", nullable = false)
     private Integer position;
 
+    //    @DateTimeFormat(pattern ="MM/DD/YY")
     @Column(name = "create_date")
     private Instant createDate;
 
@@ -38,6 +40,17 @@ public class Turn implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "turns", allowSetters = true)
     private Patient patient;
+
+    @PrePersist
+    private void prePersistAction() {
+        setLastUpdateDate(Instant.now());
+    }
+
+    public Turn create() {
+        this.createDate = Instant.now();
+        setStatus(Status.REGISTER);
+        return this;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -70,10 +83,6 @@ public class Turn implements Serializable {
         return this;
     }
 
-    public void setCreateDate(Instant createDate) {
-        this.createDate = createDate;
-    }
-
     public Instant getLastUpdateDate() {
         return lastUpdateDate;
     }
@@ -83,7 +92,7 @@ public class Turn implements Serializable {
         return this;
     }
 
-    public void setLastUpdateDate(Instant lastUpdateDate) {
+    private void setLastUpdateDate(Instant lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 
