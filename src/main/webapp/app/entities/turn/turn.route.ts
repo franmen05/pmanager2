@@ -11,6 +11,7 @@ import { TurnService } from './turn.service';
 import { TurnComponent } from './turn.component';
 import { TurnDetailComponent } from './turn-detail.component';
 import { TurnUpdateComponent } from './turn-update.component';
+import { TurnHistoryComponent } from './turn-history.component';
 
 @Injectable({ providedIn: 'root' })
 export class TurnResolve implements Resolve<ITurn> {
@@ -38,6 +39,15 @@ export const turnRoute: Routes = [
   {
     path: '',
     component: TurnComponent,
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Turns',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'history',
+    component: TurnHistoryComponent,
     data: {
       authorities: [Authority.USER],
       pageTitle: 'Turns',

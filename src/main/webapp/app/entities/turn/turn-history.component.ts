@@ -10,7 +10,7 @@ import { TurnDeleteDialogComponent } from './turn-delete-dialog.component';
 
 @Component({
   selector: 'jhi-turn',
-  templateUrl: './turn.component.html',
+  templateUrl: './turn-history.component.html',
 })
 export class TurnHistoryComponent implements OnInit, OnDestroy {
   turns?: ITurn[];
