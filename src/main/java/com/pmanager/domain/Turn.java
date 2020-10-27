@@ -20,7 +20,7 @@ public class Turn implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    //    @NotNull
     @Column(name = "position", nullable = false)
     private Integer position;
 
@@ -28,7 +28,7 @@ public class Turn implements Serializable {
     @Column(name = "create_date")
     private Instant createDate;
 
-    @NotNull
+    //    @NotNull
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
@@ -37,6 +37,7 @@ public class Turn implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
+    @NotNull
     @ManyToOne
     @JsonIgnoreProperties(value = "turns", allowSetters = true)
     private Patient patient;

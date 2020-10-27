@@ -22,10 +22,10 @@ export class TurnUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    position: [null, [Validators.required]],
+    // position: [],
     createDate: [],
-    lastUpdateDate: [null, [Validators.required]],
-    patient: [],
+    lastUpdateDate: [],
+    patient: [null, [Validators.required]],
   });
 
   constructor(
@@ -78,7 +78,7 @@ export class TurnUpdateComponent implements OnInit {
     return {
       ...new Turn(),
       id: this.editForm.get(['id'])!.value,
-      position: this.editForm.get(['position'])!.value,
+      // position: this.editForm.get(['position'])!.value,
       createDate: this.editForm.get(['createDate'])!.value ? moment(this.editForm.get(['createDate'])!.value, DATE_TIME_FORMAT) : undefined,
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)

@@ -11,45 +11,45 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" for="field_position">Position</label>
-                    <input type="number" class="form-control" name="position" id="field_position"
-                           formControlName="position"/>
-                    <div *ngIf="editForm.get('position')!.invalid && (editForm.get('position')!.dirty || editForm.get('position')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('position')?.errors?.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('position')?.errors?.number">
-                            This field should be a number.
-                        </small>
-                    </div>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_position">Position</label>-->
+<!--                    <input type="number" class="form-control" name="position" id="field_position" -->
+<!--                           formControlName="position"/>-->
+<!--                    <div *ngIf="editForm.get('position')!.invalid && (editForm.get('position')!.dirty || editForm.get('position')!.touched)">-->
+<!--                        <small class="form-text text-danger"-->
+<!--                               *ngIf="editForm.get('position')?.errors?.required">-->
+<!--                        This field is required.-->
+<!--                        </small>-->
+<!--                        <small class="form-text text-danger"-->
+<!--                            [hidden]="!editForm.get('position')?.errors?.number">-->
+<!--                            This field should be a number.-->
+<!--                        </small>-->
+<!--                    </div>-->
+<!--                </div>-->
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_createDate">Create Date</label>
+                    <label class="form-control-label" for="field_createDate">Fecha</label>
                     <div class="d-flex">
                         <input id="field_createDate" type="datetime-local" class="form-control" name="createDate" formControlName="createDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" for="field_lastUpdateDate">Last Update Date</label>
-                    <div class="d-flex">
-                        <input id="field_lastUpdateDate" type="datetime-local" class="form-control" name="lastUpdateDate" formControlName="lastUpdateDate" placeholder="YYYY-MM-DD HH:mm"/>
-                    </div>
-                    <div *ngIf="editForm.get('lastUpdateDate')!.invalid && (editForm.get('lastUpdateDate')!.dirty || editForm.get('lastUpdateDate')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('lastUpdateDate')?.errors?.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                            [hidden]="!editForm.get('lastUpdateDate')?.errors?.ZonedDateTimelocal">
-                            This field should be a date and time.
-                        </small>
-                    </div>
-                </div>
+<!--                <div class="form-group">-->
+<!--                    <label class="form-control-label" for="field_lastUpdateDate">Last Update Date</label>-->
+<!--                    <div class="d-flex">-->
+<!--                        <input id="field_lastUpdateDate" type="datetime-local" class="form-control" name="lastUpdateDate" formControlName="lastUpdateDate" placeholder="YYYY-MM-DD HH:mm"/>-->
+<!--                    </div>-->
+<!--                    <div *ngIf="editForm.get('lastUpdateDate')!.invalid && (editForm.get('lastUpdateDate')!.dirty || editForm.get('lastUpdateDate')!.touched)">-->
+<!--                        <small class="form-text text-danger"-->
+<!--                               *ngIf="editForm.get('lastUpdateDate')?.errors?.required">-->
+<!--                        This field is required.-->
+<!--                        </small>-->
+<!--                        <small class="form-text text-danger"-->
+<!--                            [hidden]="!editForm.get('lastUpdateDate')?.errors?.ZonedDateTimelocal">-->
+<!--                            This field should be a date and time.-->
+<!--                        </small>-->
+<!--                    </div>-->
+<!--                </div>-->
 
 
 
