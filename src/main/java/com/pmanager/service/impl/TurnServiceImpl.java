@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,11 +52,27 @@ public class TurnServiceImpl implements TurnService {
         return turnRepository.save(turn);
     }
 
+    //    @Override
+    @Transactional(readOnly = true)
+    public List<Turn> findAll1() {
+        log.debug("Request to get all Turns");
+        return turnRepository.findAll();
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<Turn> findAll() {
         log.debug("Request to get all Turns");
-        return turnRepository.findAll();
+        LocalDateTime date = LocalDateTime.now().withHour(1);
+        //            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        //        String myDate = date.format(dtf);
+
+        val instant = date.toInstant(ZoneOffset.ofHours(0));
+        return turnRepository
+            .findAllByCreateDateAfter(instant)
+            .stream()
+            .sorted(Comparator.comparing(Turn::getPosition))
+            .collect(Collectors.toList());
     }
 
     @Override
