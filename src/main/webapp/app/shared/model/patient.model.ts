@@ -17,6 +17,7 @@ export interface IPatient {
   createDate?: Moment;
   records?: IRecord[];
   turns?: ITurn[];
+  fullName?: string;
 }
 
 export class Patient implements IPatient {
@@ -34,8 +35,12 @@ export class Patient implements IPatient {
     public birthDate?: Moment,
     public createDate?: Moment,
     public records?: IRecord[],
-    public turns?: ITurn[]
+    public turns?: ITurn[],
+    public fullName?: string
   ) {
     this.reEnrollment = this.reEnrollment || false;
+    this.firstName = '';
+    this.lastName = '';
+    this.fullName = `${this.lastName}, ${this.firstName}`;
   }
 }

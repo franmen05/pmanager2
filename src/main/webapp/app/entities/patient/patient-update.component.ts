@@ -60,6 +60,7 @@ export class PatientUpdateComponent implements OnInit {
       address: patient.address,
       birthDate: patient.birthDate ? patient.birthDate.format(DATE_TIME_FORMAT) : null,
       createDate: patient.createDate ? patient.createDate.format(DATE_TIME_FORMAT) : null,
+      fullName: patient.lastName + ', ' + patient.firstName,
     });
   }
 
