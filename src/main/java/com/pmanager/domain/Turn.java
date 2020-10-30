@@ -6,14 +6,16 @@ import java.io.Serializable;
 import java.time.Instant;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * A Turn.
  */
+@Getter
 @Entity
 @Table(name = "turn")
-public class Turn implements Serializable {
+public class Turn extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -28,24 +30,23 @@ public class Turn implements Serializable {
     @Column(name = "create_date")
     private Instant createDate;
 
-    //    @NotNull
     @Column(name = "last_update_date", nullable = false)
-    private Instant lastUpdateDate;
+    protected Instant lastUpdateDate;
 
     //    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
 
+    @PrePersist
+    private void prePersistAction() {
+        this.lastUpdateDate = Instant.now();
+    }
+
     @NotNull
     @ManyToOne
     @JsonIgnoreProperties(value = "turns", allowSetters = true)
     private Patient patient;
-
-    @PrePersist
-    private void prePersistAction() {
-        setLastUpdateDate(Instant.now());
-    }
 
     public Turn create() {
         this.createDate = Instant.now();
@@ -84,17 +85,9 @@ public class Turn implements Serializable {
         return this;
     }
 
-    public Instant getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
     public Turn lastUpdateDate(Instant lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
         return this;
-    }
-
-    private void setLastUpdateDate(Instant lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
     }
 
     public Status getStatus() {

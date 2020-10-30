@@ -27,7 +27,7 @@ public class Record implements Serializable {
     @Column(name = "create_date")
     private Instant createDate;
 
-    @NotNull
+    //    @NotNull
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
