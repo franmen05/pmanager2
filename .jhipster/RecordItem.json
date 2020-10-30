@@ -1,0 +1,49 @@
+{
+  "name": "RecordItem",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "createDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastUpdateDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": [
+        "required"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "prescription",
+      "otherEntityRelationshipName": "recordItem",
+      "relationshipName": "presciption"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "record",
+      "otherEntityRelationshipName": "item",
+      "relationshipName": "record",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201030031400",
+  "entityTableName": "record_item",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

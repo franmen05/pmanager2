@@ -1,12 +1,12 @@
 import { Moment } from 'moment';
-import { IRecord } from 'app/shared/model/record.model';
+import { IRecordItem } from 'app/shared/model/record-item.model';
 
 export interface IPrescription {
   id?: number;
   description?: string;
   createDate?: Moment;
   lastUpdateDate?: Moment;
-  record?: IRecord;
+  recordItem?: IRecordItem;
 }
 
 export class Prescription implements IPrescription {
@@ -15,6 +15,6 @@ export class Prescription implements IPrescription {
     public description?: string,
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
-    public record?: IRecord
+    public recordItem?: IRecordItem
   ) {}
 }

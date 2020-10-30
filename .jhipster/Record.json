@@ -23,9 +23,9 @@
   "relationships": [
     {
       "relationshipType": "one-to-many",
-      "otherEntityName": "prescription",
+      "otherEntityName": "recordItem",
       "otherEntityRelationshipName": "record",
-      "relationshipName": "presciption"
+      "relationshipName": "item"
     },
     {
       "relationshipType": "one-to-many",

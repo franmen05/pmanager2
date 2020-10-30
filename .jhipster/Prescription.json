@@ -23,9 +23,9 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "record",
+      "otherEntityName": "recordItem",
       "otherEntityRelationshipName": "presciption",
-      "relationshipName": "record",
+      "relationshipName": "recordItem",
       "otherEntityField": "id"
     }
   ],

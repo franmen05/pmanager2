@@ -1,21 +1,28 @@
 package com.pmanager.web.rest;
 
 import com.pmanager.domain.Turn;
-import com.pmanager.domain.enumeration.Status;
 import com.pmanager.service.TurnService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
+
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing {@link com.pmanager.domain.Turn}.
@@ -23,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class TurnResource {
+
     private final Logger log = LoggerFactory.getLogger(TurnResource.class);
 
     private static final String ENTITY_NAME = "turn";
@@ -46,11 +54,11 @@ public class TurnResource {
     @PostMapping("/turns")
     public ResponseEntity<Turn> createTurn(@Valid @RequestBody Turn turn) throws URISyntaxException {
         log.debug("REST request to save Turn : {}", turn);
-        if (turn.getId() != null) throw new BadRequestAlertException("A new turn cannot already have an ID", ENTITY_NAME, "idexists");
-
-        Turn result = turnService.save(turn.create());
-        return ResponseEntity
-            .created(new URI("/api/turns/" + result.getId()))
+        if (turn.getId() != null) {
+            throw new BadRequestAlertException("A new turn cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        Turn result = turnService.save(turn);
+        return ResponseEntity.created(new URI("/api/turns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -71,8 +79,7 @@ public class TurnResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Turn result = turnService.save(turn);
-        return ResponseEntity
-            .ok()
+        return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, turn.getId().toString()))
             .body(result);
     }
@@ -80,12 +87,15 @@ public class TurnResource {
     /**
      * {@code GET  /turns} : get all the turns.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of turns in body.
      */
     @GetMapping("/turns")
-    public List<Turn> getAllTurns() {
-        log.debug("REST request to get all Turns");
-        return turnService.findAll();
+    public ResponseEntity<List<Turn>> getAllTurns(Pageable pageable) {
+        log.debug("REST request to get a page of Turns");
+        Page<Turn> page = turnService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -111,9 +121,6 @@ public class TurnResource {
     public ResponseEntity<Void> deleteTurn(@PathVariable Long id) {
         log.debug("REST request to delete Turn : {}", id);
         turnService.delete(id);
-        return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
-            .build();
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

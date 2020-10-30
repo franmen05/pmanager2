@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="recordItem">
+            <h2><span>Record Item</span> {{ recordItem.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Description</span></dt>
+                <dd>
+                    <span>{{ recordItem.description }}</span>
+                </dd>
+                <dt><span>Create Date</span></dt>
+                <dd>
+                    <span>{{ recordItem.createDate }}</span>
+                </dd>
+                <dt><span>Last Update Date</span></dt>
+                <dd>
+                    <span>{{ recordItem.lastUpdateDate }}</span>
+                </dd>
+                <dt><span>Record</span></dt>
+                <dd>
+                    <div *ngIf="recordItem.record">
+                        <a [routerLink]="['/record', recordItem.record?.id, 'view']">{{ recordItem.record?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/record-item', recordItem.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

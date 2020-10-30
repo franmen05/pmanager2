@@ -27,8 +27,6 @@ public class PatientDTO implements Serializable {
     
     private String email;
 
-    private Boolean reEnrollment;
-
     private String phoneNumber;
 
     private String whatsapp;
@@ -42,7 +40,6 @@ public class PatientDTO implements Serializable {
 
     private Instant birthDate;
 
-    @NotNull
     private Instant createDate;
 
     
@@ -76,14 +73,6 @@ public class PatientDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Boolean isReEnrollment() {
-        return reEnrollment;
-    }
-
-    public void setReEnrollment(Boolean reEnrollment) {
-        this.reEnrollment = reEnrollment;
     }
 
     public String getPhoneNumber() {
@@ -167,7 +156,6 @@ public class PatientDTO implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
-            ", reEnrollment='" + isReEnrollment() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", whatsapp='" + getWhatsapp() + "'" +
             ", cellNumber='" + getCellNumber() + "'" +

@@ -1,5 +1,5 @@
 import { Moment } from 'moment';
-import { IPrescription } from 'app/shared/model/prescription.model';
+import { IRecordItem } from 'app/shared/model/record-item.model';
 import { IMedicalHistory } from 'app/shared/model/medical-history.model';
 import { IPatient } from 'app/shared/model/patient.model';
 
@@ -8,8 +8,9 @@ export interface IRecord {
   description?: string;
   createDate?: Moment;
   lastUpdateDate?: Moment;
-  presciptions?: IPrescription[];
+  items?: IRecordItem[];
   medicalHistories?: IMedicalHistory[];
+  patient?: IPatient;
   patient?: IPatient;
 }
 
@@ -19,8 +20,9 @@ export class Record implements IRecord {
     public description?: string,
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
-    public presciptions?: IPrescription[],
+    public items?: IRecordItem[],
     public medicalHistories?: IMedicalHistory[],
+    public patient?: IPatient,
     public patient?: IPatient
   ) {}
 }

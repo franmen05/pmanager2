@@ -7,6 +7,12 @@
         Added the constraints for entity Turn.
     -->
     <changeSet id="20201019013249-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="patient_id"
+                                 baseTableName="turn"
+                                 constraintName="fk_turn_patient_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="patient"/>
 
         <addForeignKeyConstraint baseColumnNames="patient_id"
                                  baseTableName="turn"

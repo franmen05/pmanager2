@@ -37,9 +37,6 @@ public class Patient implements Serializable {
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "re_enrollment")
-    private Boolean reEnrollment;
-
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -59,8 +56,7 @@ public class Patient implements Serializable {
     @Column(name = "birth_date")
     private Instant birthDate;
 
-    @NotNull
-    @Column(name = "create_date", nullable = false)
+    @Column(name = "create_date")
     private Instant createDate;
 
     @OneToMany(mappedBy = "patient")
@@ -115,19 +111,6 @@ public class Patient implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Boolean isReEnrollment() {
-        return reEnrollment;
-    }
-
-    public Patient reEnrollment(Boolean reEnrollment) {
-        this.reEnrollment = reEnrollment;
-        return this;
-    }
-
-    public void setReEnrollment(Boolean reEnrollment) {
-        this.reEnrollment = reEnrollment;
     }
 
     public String getPhoneNumber() {
@@ -296,7 +279,6 @@ public class Patient implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
-            ", reEnrollment='" + isReEnrollment() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", whatsapp='" + getWhatsapp() + "'" +
             ", cellNumber='" + getCellNumber() + "'" +

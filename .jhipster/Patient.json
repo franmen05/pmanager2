@@ -24,10 +24,6 @@
       ]
     },
     {
-      "fieldName": "reEnrollment",
-      "fieldType": "Boolean"
-    },
-    {
       "fieldName": "phoneNumber",
       "fieldType": "String"
     },
@@ -56,10 +52,7 @@
     },
     {
       "fieldName": "createDate",
-      "fieldType": "Instant",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldType": "Instant"
     }
   ],
   "relationships": [

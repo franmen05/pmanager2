@@ -9,8 +9,8 @@ import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { IPrescription, Prescription } from 'app/shared/model/prescription.model';
 import { PrescriptionService } from './prescription.service';
-import { IRecord } from 'app/shared/model/record.model';
-import { RecordService } from 'app/entities/record/record.service';
+import { IRecordItem } from 'app/shared/model/record-item.model';
+import { RecordItemService } from 'app/entities/record-item/record-item.service';
 
 @Component({
   selector: 'jhi-prescription-update',
@@ -18,19 +18,19 @@ import { RecordService } from 'app/entities/record/record.service';
 })
 export class PrescriptionUpdateComponent implements OnInit {
   isSaving = false;
-  records: IRecord[] = [];
+  recorditems: IRecordItem[] = [];
 
   editForm = this.fb.group({
     id: [],
     description: [null, [Validators.required]],
     createDate: [],
     lastUpdateDate: [null, [Validators.required]],
-    record: [],
+    recordItem: [],
   });
 
   constructor(
     protected prescriptionService: PrescriptionService,
-    protected recordService: RecordService,
+    protected recordItemService: RecordItemService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -45,7 +45,7 @@ export class PrescriptionUpdateComponent implements OnInit {
 
       this.updateForm(prescription);
 
-      this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
+      this.recordItemService.query().subscribe((res: HttpResponse<IRecordItem[]>) => (this.recorditems = res.body || []));
     });
   }
 
@@ -55,7 +55,7 @@ export class PrescriptionUpdateComponent implements OnInit {
       description: prescription.description,
       createDate: prescription.createDate ? prescription.createDate.format(DATE_TIME_FORMAT) : null,
       lastUpdateDate: prescription.lastUpdateDate ? prescription.lastUpdateDate.format(DATE_TIME_FORMAT) : null,
-      record: prescription.record,
+      recordItem: prescription.recordItem,
     });
   }
 
@@ -82,7 +82,7 @@ export class PrescriptionUpdateComponent implements OnInit {
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      record: this.editForm.get(['record'])!.value,
+      recordItem: this.editForm.get(['recordItem'])!.value,
     };
   }
 
@@ -102,7 +102,7 @@ export class PrescriptionUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IRecord): any {
+  trackById(index: number, item: IRecordItem): any {
     return item.id;
   }
 }

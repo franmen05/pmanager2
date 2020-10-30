@@ -34,7 +34,7 @@ public class Prescription implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
-    private Record record;
+    private RecordItem recordItem;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -84,17 +84,17 @@ public class Prescription implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Record getRecord() {
-        return record;
+    public RecordItem getRecordItem() {
+        return recordItem;
     }
 
-    public Prescription record(Record record) {
-        this.record = record;
+    public Prescription recordItem(RecordItem recordItem) {
+        this.recordItem = recordItem;
         return this;
     }
 
-    public void setRecord(Record record) {
-        this.record = record;
+    public void setRecordItem(RecordItem recordItem) {
+        this.recordItem = recordItem;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -29,6 +29,10 @@ import { RouterModule } from '@angular/router';
         path: 'turn',
         loadChildren: () => import('./turn/turn.module').then(m => m.PmanagerTurnModule),
       },
+      {
+        path: 'record-item',
+        loadChildren: () => import('./record-item/record-item.module').then(m => m.PmanagerRecordItemModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
@@ -13,84 +12,22 @@ import { TurnService } from './turn.service';
 import { IPatient } from 'app/shared/model/patient.model';
 import { PatientService } from 'app/entities/patient/patient.service';
 
-const states = [
-  'Alabama',
-  'Alaska',
-  'American Samoa',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'District Of Columbia',
-  'Federated States Of Micronesia',
-  'Florida',
-  'Georgia',
-  'Guam',
-  'Hawaii',
-  'Idaho',
-  'Illinois',
-  'Indiana',
-  'Iowa',
-  'Kansas',
-  'Kentucky',
-  'Louisiana',
-  'Maine',
-  'Marshall Islands',
-  'Maryland',
-  'Massachusetts',
-  'Michigan',
-  'Minnesota',
-  'Mississippi',
-  'Missouri',
-  'Montana',
-  'Nebraska',
-  'Nevada',
-  'New Hampshire',
-  'New Jersey',
-  'New Mexico',
-  'New York',
-  'North Carolina',
-  'North Dakota',
-  'Northern Mariana Islands',
-  'Ohio',
-  'Oklahoma',
-  'Oregon',
-  'Palau',
-  'Pennsylvania',
-  'Puerto Rico',
-  'Rhode Island',
-  'South Carolina',
-  'South Dakota',
-  'Tennessee',
-  'Texas',
-  'Utah',
-  'Vermont',
-  'Virgin Islands',
-  'Virginia',
-  'Washington',
-  'West Virginia',
-  'Wisconsin',
-  'Wyoming',
-];
-
 @Component({
   selector: 'jhi-turn-update',
   templateUrl: './turn-update.component.html',
 })
 export class TurnUpdateComponent implements OnInit {
-  public model: IPatient = {};
-
   isSaving = false;
   patients: IPatient[] = [];
 
   editForm = this.fb.group({
     id: [],
-    // position: [],
+    position: [null, [Validators.required]],
     createDate: [],
-    lastUpdateDate: [],
-    patient: [null, [Validators.required]],
+    lastUpdateDate: [null, [Validators.required]],
+    status: [null, [Validators.required]],
+    patient: [],
+    patient: [],
   });
 
   constructor(
@@ -99,28 +36,6 @@ export class TurnUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
-
-  formatter = (state: IPatient) => ` ${state.lastName}, ${state.firstName}`;
-
-  search = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term =>
-        this.patients
-          .filter((v: IPatient) => {
-            if (v.lastName) {
-              v.fullName = `${v.lastName}, ${v.firstName}`;
-              // TODO:  Mejorar esta implementacion
-              return v.lastName.toLowerCase().includes(term.toLowerCase()) || v.firstName === undefined
-                ? {}
-                : v.firstName.toLowerCase().includes(term.toLowerCase());
-            }
-            return false;
-          })
-          .slice(0, 10)
-      )
-    );
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ turn }) => {
@@ -144,6 +59,7 @@ export class TurnUpdateComponent implements OnInit {
       lastUpdateDate: turn.lastUpdateDate ? turn.lastUpdateDate.format(DATE_TIME_FORMAT) : null,
       status: turn.status,
       patient: turn.patient,
+      patient: turn.patient,
     });
   }
 
@@ -165,11 +81,13 @@ export class TurnUpdateComponent implements OnInit {
     return {
       ...new Turn(),
       id: this.editForm.get(['id'])!.value,
-      // position: this.editForm.get(['position'])!.value,
+      position: this.editForm.get(['position'])!.value,
       createDate: this.editForm.get(['createDate'])!.value ? moment(this.editForm.get(['createDate'])!.value, DATE_TIME_FORMAT) : undefined,
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
+      status: this.editForm.get(['status'])!.value,
+      patient: this.editForm.get(['patient'])!.value,
       patient: this.editForm.get(['patient'])!.value,
     };
   }
