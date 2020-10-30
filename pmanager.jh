@@ -20,7 +20,6 @@ entity Patient {
 	firstName String required
 	lastName String  required
 	email String unique
-    reEnrollment Boolean 
 	phoneNumber String
     whatsapp String
     cellNumber String
@@ -28,7 +27,7 @@ entity Patient {
     address String required
 	birthDate Instant
 	createDate Instant  
-    createDate Instant  required
+    createDate Instant 
 }
 
 entity Record{
@@ -38,8 +37,15 @@ entity Record{
 
 }
 
+entity RecordItem{
+  description String required 
+  createDate Instant
+  lastUpdateDate Instant required
+
+}
+
 entity Prescription {
-	
+
 	description String required 
 	createDate Instant
   	lastUpdateDate Instant required
@@ -74,7 +80,8 @@ relationship OneToMany {
 	Patient{record} to Record
     Patient{turn} to Turn
     
-    Record{presciption} to Prescription
+    Record{item} to RecordItem
+    RecordItem{presciption} to Prescription
     Record{medicalHistory} to MedicalHistory
     MedicalHistory{medicalHistory} to MedicalHistoryConfig
 }
@@ -84,8 +91,13 @@ relationship ManyToOne {
     Turn{patient} to Patient
 }
 
+//relationship OneToOne{
+//	NCF{invoice} to Invoice
+//}  
+
 // Set pagination options
 paginate Patient with pagination
+paginate Turn with infinite-scroll
 // paginate JobHistory, Employee with infinite-scroll
 // paginate Job with pagination
 
