@@ -47,7 +47,7 @@
   "changelogDate": "20201019013249",
   "entityTableName": "turn",
   "dto": "no",
-  "pagination": "no",
+  "pagination": "infinite-scroll",
   "service": "serviceImpl",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,

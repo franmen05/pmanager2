@@ -1,12 +1,14 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.*;
-import javax.validation.constraints.*;
 
 /**
  * A Record.
@@ -14,6 +16,7 @@ import javax.validation.constraints.*;
 @Entity
 @Table(name = "record")
 public class Record implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -27,15 +30,19 @@ public class Record implements Serializable {
     @Column(name = "create_date")
     private Instant createDate;
 
-    //    @NotNull
+    @NotNull
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
     @OneToMany(mappedBy = "record")
-    private Set<Prescription> presciptions = new HashSet<>();
+    private Set<RecordItem> items = new HashSet<>();
 
     @OneToMany(mappedBy = "record")
     private Set<MedicalHistory> medicalHistories = new HashSet<>();
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "records", allowSetters = true)
+    private Patient patient;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "records", allowSetters = true)
@@ -89,29 +96,29 @@ public class Record implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Set<Prescription> getPresciptions() {
-        return presciptions;
+    public Set<RecordItem> getItems() {
+        return items;
     }
 
-    public Record presciptions(Set<Prescription> prescriptions) {
-        this.presciptions = prescriptions;
+    public Record items(Set<RecordItem> recordItems) {
+        this.items = recordItems;
         return this;
     }
 
-    public Record addPresciption(Prescription prescription) {
-        this.presciptions.add(prescription);
-        prescription.setRecord(this);
+    public Record addItem(RecordItem recordItem) {
+        this.items.add(recordItem);
+        recordItem.setRecord(this);
         return this;
     }
 
-    public Record removePresciption(Prescription prescription) {
-        this.presciptions.remove(prescription);
-        prescription.setRecord(null);
+    public Record removeItem(RecordItem recordItem) {
+        this.items.remove(recordItem);
+        recordItem.setRecord(null);
         return this;
     }
 
-    public void setPresciptions(Set<Prescription> prescriptions) {
-        this.presciptions = prescriptions;
+    public void setItems(Set<RecordItem> recordItems) {
+        this.items = recordItems;
     }
 
     public Set<MedicalHistory> getMedicalHistories() {
@@ -152,6 +159,18 @@ public class Record implements Serializable {
         this.patient = patient;
     }
 
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public Record patient(Patient patient) {
+        this.patient = patient;
+        return this;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

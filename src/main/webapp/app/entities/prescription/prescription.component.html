@@ -26,7 +26,7 @@
                     <th scope="col" ><span>Description</span></th>
                     <th scope="col" ><span>Create Date</span></th>
                     <th scope="col" ><span>Last Update Date</span></th>
-                    <th scope="col" ><span>Record</span></th>
+                    <th scope="col" ><span>Record Item</span></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -37,8 +37,8 @@
                     <td>{{ prescription.createDate | date:'medium' }}</td>
                     <td>{{ prescription.lastUpdateDate | date:'medium' }}</td>
                     <td>
-                        <div *ngIf="prescription.record">
-                            <a [routerLink]="['/record', prescription.record?.id, 'view']" >{{ prescription.record?.id }}</a>
+                        <div *ngIf="prescription.recordItem">
+                            <a [routerLink]="['/record-item', prescription.recordItem?.id, 'view']" >{{ prescription.recordItem?.id }}</a>
                         </div>
                     </td>
                     <td class="text-right">

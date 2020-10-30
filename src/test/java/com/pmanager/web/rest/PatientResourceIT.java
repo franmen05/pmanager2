@@ -43,9 +43,6 @@ public class PatientResourceIT {
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_RE_ENROLLMENT = false;
-    private static final Boolean UPDATED_RE_ENROLLMENT = true;
-
     private static final String DEFAULT_PHONE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
@@ -95,7 +92,6 @@ public class PatientResourceIT {
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .email(DEFAULT_EMAIL)
-            .reEnrollment(DEFAULT_RE_ENROLLMENT)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
             .whatsapp(DEFAULT_WHATSAPP)
             .cellNumber(DEFAULT_CELL_NUMBER)
@@ -116,7 +112,6 @@ public class PatientResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
-            .reEnrollment(UPDATED_RE_ENROLLMENT)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .whatsapp(UPDATED_WHATSAPP)
             .cellNumber(UPDATED_CELL_NUMBER)
@@ -150,7 +145,6 @@ public class PatientResourceIT {
         assertThat(testPatient.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testPatient.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testPatient.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testPatient.isReEnrollment()).isEqualTo(DEFAULT_RE_ENROLLMENT);
         assertThat(testPatient.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
         assertThat(testPatient.getWhatsapp()).isEqualTo(DEFAULT_WHATSAPP);
         assertThat(testPatient.getCellNumber()).isEqualTo(DEFAULT_CELL_NUMBER);
@@ -243,26 +237,6 @@ public class PatientResourceIT {
 
     @Test
     @Transactional
-    public void checkCreateDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = patientRepository.findAll().size();
-        // set the field null
-        patient.setCreateDate(null);
-
-        // Create the Patient, which fails.
-        PatientDTO patientDTO = patientMapper.toDto(patient);
-
-
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Patient> patientList = patientRepository.findAll();
-        assertThat(patientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllPatients() throws Exception {
         // Initialize the database
         patientRepository.saveAndFlush(patient);
@@ -275,7 +249,6 @@ public class PatientResourceIT {
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].reEnrollment").value(hasItem(DEFAULT_RE_ENROLLMENT.booleanValue())))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)))
             .andExpect(jsonPath("$.[*].whatsapp").value(hasItem(DEFAULT_WHATSAPP)))
             .andExpect(jsonPath("$.[*].cellNumber").value(hasItem(DEFAULT_CELL_NUMBER)))
@@ -299,7 +272,6 @@ public class PatientResourceIT {
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.reEnrollment").value(DEFAULT_RE_ENROLLMENT.booleanValue()))
             .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER))
             .andExpect(jsonPath("$.whatsapp").value(DEFAULT_WHATSAPP))
             .andExpect(jsonPath("$.cellNumber").value(DEFAULT_CELL_NUMBER))
@@ -332,7 +304,6 @@ public class PatientResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
-            .reEnrollment(UPDATED_RE_ENROLLMENT)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .whatsapp(UPDATED_WHATSAPP)
             .cellNumber(UPDATED_CELL_NUMBER)
@@ -354,7 +325,6 @@ public class PatientResourceIT {
         assertThat(testPatient.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testPatient.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testPatient.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testPatient.isReEnrollment()).isEqualTo(UPDATED_RE_ENROLLMENT);
         assertThat(testPatient.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testPatient.getWhatsapp()).isEqualTo(UPDATED_WHATSAPP);
         assertThat(testPatient.getCellNumber()).isEqualTo(UPDATED_CELL_NUMBER);

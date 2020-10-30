@@ -9,6 +9,7 @@ export interface ITurn {
   lastUpdateDate?: Moment;
   status?: Status;
   patient?: IPatient;
+  patient?: IPatient;
 }
 
 export class Turn implements ITurn {
@@ -18,6 +19,7 @@ export class Turn implements ITurn {
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
     public status?: Status,
+    public patient?: IPatient,
     public patient?: IPatient
   ) {}
 }

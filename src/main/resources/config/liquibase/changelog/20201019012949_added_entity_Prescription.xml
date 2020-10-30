@@ -25,7 +25,7 @@
             <column name="last_update_date" type="datetime">
                 <constraints nullable="false" />
             </column>
-            <column name="record_id" type="bigint">
+            <column name="record_item_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->

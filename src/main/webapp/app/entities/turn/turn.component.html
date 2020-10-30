@@ -20,32 +20,49 @@
 
     <div class="table-responsive" id="entities" *ngIf="turns && turns.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
-            <thead class="text-left ">
-                <tr>
-                    <th scope="col" ><span>Position</span></th>
-                    <th scope="col" ><span>Status</span></th>
-                    <th scope="col" ><span>Patient</span></th>
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="position"><span>Position</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="createDate"><span>Create Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastUpdateDate"><span>Last Update Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span>Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="patient.id"><span>Patient</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="patient.id"><span>Patient</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
                 <tr *ngFor="let turn of turns ;trackBy: trackId">
-
+                    <td><a [routerLink]="['/turn', turn.id, 'view']">{{ turn.id }}</a></td>
                     <td>{{ turn.position }}</td>
+                    <td>{{ turn.createDate | date:'medium' }}</td>
+                    <td>{{ turn.lastUpdateDate | date:'medium' }}</td>
                     <td>{{ turn.status }}</td>
                     <td>
                         <div *ngIf="turn.patient">
-                            <a [routerLink]="['/patient', turn.patient?.id, 'view']" >{{ turn.patient?.lastName  }}, {{ turn.patient?.firstName  }}  </a>
+                            <a [routerLink]="['/patient', turn.patient?.id, 'view']" >{{ turn.patient?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="turn.patient">
+                            <a [routerLink]="['/patient', turn.patient?.id, 'view']" >{{ turn.patient?.id }}</a>
                         </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
-
                             <button type="submit"
                                     [routerLink]="['/turn', turn.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/turn', turn.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
                             </button>
 
                             <button type="submit" (click)="delete(turn)"

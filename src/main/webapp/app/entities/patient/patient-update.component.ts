@@ -22,14 +22,13 @@ export class PatientUpdateComponent implements OnInit {
     firstName: [null, [Validators.required]],
     lastName: [null, [Validators.required]],
     email: [null, []],
-    reEnrollment: [],
     phoneNumber: [],
     whatsapp: [],
     cellNumber: [],
     emergencyNumber: [],
     address: [null, [Validators.required]],
     birthDate: [],
-    createDate: [null, [Validators.required]],
+    createDate: [],
   });
 
   constructor(protected patientService: PatientService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -52,7 +51,6 @@ export class PatientUpdateComponent implements OnInit {
       firstName: patient.firstName,
       lastName: patient.lastName,
       email: patient.email,
-      reEnrollment: patient.reEnrollment,
       phoneNumber: patient.phoneNumber,
       whatsapp: patient.whatsapp,
       cellNumber: patient.cellNumber,
@@ -60,7 +58,6 @@ export class PatientUpdateComponent implements OnInit {
       address: patient.address,
       birthDate: patient.birthDate ? patient.birthDate.format(DATE_TIME_FORMAT) : null,
       createDate: patient.createDate ? patient.createDate.format(DATE_TIME_FORMAT) : null,
-      fullName: patient.lastName + ', ' + patient.firstName,
     });
   }
 
@@ -85,7 +82,6 @@ export class PatientUpdateComponent implements OnInit {
       firstName: this.editForm.get(['firstName'])!.value,
       lastName: this.editForm.get(['lastName'])!.value,
       email: this.editForm.get(['email'])!.value,
-      reEnrollment: this.editForm.get(['reEnrollment'])!.value,
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
       whatsapp: this.editForm.get(['whatsapp'])!.value,
       cellNumber: this.editForm.get(['cellNumber'])!.value,

@@ -11,70 +11,76 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
-<!--                <div class="form-group">-->
-<!--                    <label class="form-control-label" for="field_position">Position</label>-->
-<!--                    <input type="number" class="form-control" name="position" id="field_position" -->
-<!--                           formControlName="position"/>-->
-<!--                    <div *ngIf="editForm.get('position')!.invalid && (editForm.get('position')!.dirty || editForm.get('position')!.touched)">-->
-<!--                        <small class="form-text text-danger"-->
-<!--                               *ngIf="editForm.get('position')?.errors?.required">-->
-<!--                        This field is required.-->
-<!--                        </small>-->
-<!--                        <small class="form-text text-danger"-->
-<!--                            [hidden]="!editForm.get('position')?.errors?.number">-->
-<!--                            This field should be a number.-->
-<!--                        </small>-->
-<!--                    </div>-->
-<!--                </div>-->
-
                 <div class="form-group">
-                    <label class="form-control-label" for="field_createDate">Fecha</label>
-                    <div class="d-flex">
-                        <input id="field_createDate" type="datetime-local" class="form-control" name="createDate" formControlName="createDate" placeholder="YYYY-MM-DD HH:mm"   [readonly]="true"/>
+                    <label class="form-control-label" for="field_position">Position</label>
+                    <input type="number" class="form-control" name="position" id="field_position"
+                           formControlName="position"/>
+                    <div *ngIf="editForm.get('position')!.invalid && (editForm.get('position')!.dirty || editForm.get('position')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('position')?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('position')?.errors?.number">
+                            This field should be a number.
+                        </small>
                     </div>
                 </div>
 
-                <ng-template #rt let-r="result" let-t="term">
-<!--                    <img [src]="'https://upload.wikimedia.org/wikipedia/commons/thumb/' + r['flag']" class="mr-1" style="width: 16px">-->
-                    <ngb-highlight [result]="r.fullName" [term]="t" ></ngb-highlight>
-                </ng-template>
-
                 <div class="form-group">
-                    <label class="form-control-label" for="typeahead-basic">Paciente: </label>
+                    <label class="form-control-label" for="field_createDate">Create Date</label>
                     <div class="d-flex">
-                        <input id="typeahead-basic" type="text" class="form-control" formControlName="patient" [ngbTypeahead]="search" [resultTemplate]="rt"
-                               placeholder="Introduzca Paciente"  [inputFormatter]="formatter"  />
+                        <input id="field_createDate" type="datetime-local" class="form-control" name="createDate" formControlName="createDate" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
-                <hr>
-<!--                <pre>Model: {{ editForm.get('model')!.value  }}</pre>-->
 
-<!--                <div class="form-group">-->
-<!--                    <label class="form-control-label" for="field_lastUpdateDate">Last Update Date</label>-->
-<!--                    <div class="d-flex">-->
-<!--                        <input id="field_lastUpdateDate" type="datetime-local" class="form-control" name="lastUpdateDate" formControlName="lastUpdateDate" placeholder="YYYY-MM-DD HH:mm"/>-->
-<!--                    </div>-->
-<!--                    <div *ngIf="editForm.get('lastUpdateDate')!.invalid && (editForm.get('lastUpdateDate')!.dirty || editForm.get('lastUpdateDate')!.touched)">-->
-<!--                        <small class="form-text text-danger"-->
-<!--                               *ngIf="editForm.get('lastUpdateDate')?.errors?.required">-->
-<!--                        This field is required.-->
-<!--                        </small>-->
-<!--                        <small class="form-text text-danger"-->
-<!--                            [hidden]="!editForm.get('lastUpdateDate')?.errors?.ZonedDateTimelocal">-->
-<!--                            This field should be a date and time.-->
-<!--                        </small>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lastUpdateDate">Last Update Date</label>
+                    <div class="d-flex">
+                        <input id="field_lastUpdateDate" type="datetime-local" class="form-control" name="lastUpdateDate" formControlName="lastUpdateDate" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('lastUpdateDate')!.invalid && (editForm.get('lastUpdateDate')!.dirty || editForm.get('lastUpdateDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('lastUpdateDate')?.errors?.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('lastUpdateDate')?.errors?.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_status">Status</label>
+                    <select class="form-control" name="status" formControlName="status" id="field_status">
+                        <option value="REGISTER">REGISTER</option>
+                        <option value="FINSHED">FINSHED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                    </select>
+                    <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('status')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" for="field_patient">Patient</label>
+                    <select class="form-control" id="field_patient" name="patient" formControlName="patient">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="patientOption.id === editForm.get('patient')!.value?.id ? editForm.get('patient')!.value : patientOption" *ngFor="let patientOption of patients; trackBy: trackById">{{ patientOption.id }}</option>
+                    </select>
+                </div>
 
-<!--                <div class="form-group">-->
-<!--                    <label class="form-control-label" for="field_patient">Patient</label>-->
-<!--                    <select class="form-control" id="field_patient" name="patient" formControlName="patient">-->
-<!--                        <option [ngValue]="null"></option>-->
-<!--                        <option [ngValue]="patientOption.id === editForm.get('patient')!.value?.id ? editForm.get('patient')!.value : patientOption" *ngFor="let patientOption of patients; trackBy: trackById">{{ patientOption.id }}</option>-->
-<!--                    </select>-->
-<!--                </div>-->
+                <div class="form-group">
+                    <label class="form-control-label" for="field_patient">Patient</label>
+                    <select class="form-control" id="field_patient" name="patient" formControlName="patient">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="patientOption.id === editForm.get('patient')!.value?.id ? editForm.get('patient')!.value : patientOption" *ngFor="let patientOption of patients; trackBy: trackById">{{ patientOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

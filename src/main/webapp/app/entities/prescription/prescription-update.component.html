@@ -48,10 +48,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" for="field_record">Record</label>
-                    <select class="form-control" id="field_record" name="record" formControlName="record">
+                    <label class="form-control-label" for="field_recordItem">Record Item</label>
+                    <select class="form-control" id="field_recordItem" name="recordItem" formControlName="recordItem">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="recordOption.id === editForm.get('record')!.value?.id ? editForm.get('record')!.value : recordOption" *ngFor="let recordOption of records; trackBy: trackById">{{ recordOption.id }}</option>
+                        <option [ngValue]="recordItemOption.id === editForm.get('recordItem')!.value?.id ? editForm.get('recordItem')!.value : recordItemOption" *ngFor="let recordItemOption of recorditems; trackBy: trackById">{{ recordItemOption.id }}</option>
                     </select>
                 </div>
             </div>

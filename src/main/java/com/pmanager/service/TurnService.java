@@ -2,7 +2,9 @@ package com.pmanager.service;
 
 import com.pmanager.domain.Turn;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.Optional;
 
 /**
@@ -21,9 +23,10 @@ public interface TurnService {
     /**
      * Get all the turns.
      *
+     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    List<Turn> findAll();
+    Page<Turn> findAll(Pageable pageable);
 
 
     /**

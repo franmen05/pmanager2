@@ -1,58 +1,51 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.pmanager.domain.enumeration.Status;
-import java.io.Serializable;
-import java.time.Instant;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import lombok.Getter;
-import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.Serializable;
+import java.time.Instant;
+
+import com.pmanager.domain.enumeration.Status;
 
 /**
  * A Turn.
  */
-@Getter
 @Entity
 @Table(name = "turn")
-public class Turn extends BaseEntity {
+public class Turn implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @NotNull
+    @NotNull
     @Column(name = "position", nullable = false)
     private Integer position;
 
-    //    @DateTimeFormat(pattern ="MM/DD/YY")
     @Column(name = "create_date")
     private Instant createDate;
 
+    @NotNull
     @Column(name = "last_update_date", nullable = false)
-    protected Instant lastUpdateDate;
+    private Instant lastUpdateDate;
 
-    //    @NotNull
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @PrePersist
-    private void prePersistAction() {
-        this.lastUpdateDate = Instant.now();
-    }
-
-    @NotNull
     @ManyToOne
     @JsonIgnoreProperties(value = "turns", allowSetters = true)
     private Patient patient;
 
-    public Turn create() {
-        this.createDate = Instant.now();
-        setStatus(Status.REGISTER);
-        return this;
-    }
+    @ManyToOne
+    @JsonIgnoreProperties(value = "turns", allowSetters = true)
+    private Patient patient;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -85,9 +78,21 @@ public class Turn extends BaseEntity {
         return this;
     }
 
+    public void setCreateDate(Instant createDate) {
+        this.createDate = createDate;
+    }
+
+    public Instant getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
     public Turn lastUpdateDate(Instant lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
         return this;
+    }
+
+    public void setLastUpdateDate(Instant lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 
     public Status getStatus() {
@@ -103,6 +108,10 @@ public class Turn extends BaseEntity {
         this.status = status;
     }
 
+    public Patient getPatient() {
+        return patient;
+    }
+
     public Turn patient(Patient patient) {
         this.patient = patient;
         return this;
@@ -116,6 +125,14 @@ public class Turn extends BaseEntity {
         return patient;
     }
 
+    public Turn patient(Patient patient) {
+        this.patient = patient;
+        return this;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
