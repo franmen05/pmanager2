@@ -1,14 +1,11 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import com.pmanager.domain.enumeration.Status;
 import java.io.Serializable;
 import java.time.Instant;
-
-import com.pmanager.domain.enumeration.Status;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A Turn.
@@ -16,7 +13,6 @@ import com.pmanager.domain.enumeration.Status;
 @Entity
 @Table(name = "turn")
 public class Turn implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -34,14 +30,10 @@ public class Turn implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    @NotNull
+    //    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "turns", allowSetters = true)
-    private Patient patient;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "turns", allowSetters = true)
@@ -121,18 +113,6 @@ public class Turn implements Serializable {
         this.patient = patient;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public Turn patient(Patient patient) {
-        this.patient = patient;
-        return this;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

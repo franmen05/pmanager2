@@ -1,14 +1,12 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A Record.
@@ -16,7 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "record")
 public class Record implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -39,10 +36,6 @@ public class Record implements Serializable {
 
     @OneToMany(mappedBy = "record")
     private Set<MedicalHistory> medicalHistories = new HashSet<>();
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "records", allowSetters = true)
-    private Patient patient;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "records", allowSetters = true)
@@ -159,18 +152,6 @@ public class Record implements Serializable {
         this.patient = patient;
     }
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public Record patient(Patient patient) {
-        this.patient = patient;
-        return this;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
