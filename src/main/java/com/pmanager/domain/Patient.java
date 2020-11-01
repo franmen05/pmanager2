@@ -1,13 +1,11 @@
 package com.pmanager.domain;
 
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * The Patient entity.
@@ -15,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "patient")
 public class Patient implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -33,7 +30,6 @@ public class Patient implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    
     @Column(name = "email", unique = true)
     private String email;
 
@@ -68,6 +64,12 @@ public class Patient implements Serializable {
 
     @OneToMany(mappedBy = "patient")
     private Set<Turn> turns = new HashSet<>();
+
+    public Patient() {}
+
+    public Patient(Long id) {
+        this.id = id;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -270,6 +272,7 @@ public class Patient implements Serializable {
     public void setTurns(Set<Turn> turns) {
         this.turns = turns;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

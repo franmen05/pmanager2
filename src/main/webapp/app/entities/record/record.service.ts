@@ -37,6 +37,13 @@ export class RecordService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  findAllByPatient(id: number): Observable<EntityArrayResponseType> {
+    // const options = createRequestOption(req);
+    return this.http
+      .get<IRecord[]>(`${this.resourceUrl}/patient/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

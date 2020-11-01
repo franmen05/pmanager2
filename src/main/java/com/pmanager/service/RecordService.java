@@ -1,7 +1,7 @@
 package com.pmanager.service;
 
+import com.pmanager.domain.Patient;
 import com.pmanager.domain.Record;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +9,6 @@ import java.util.Optional;
  * Service Interface for managing {@link Record}.
  */
 public interface RecordService {
-
     /**
      * Save a record.
      *
@@ -24,7 +23,7 @@ public interface RecordService {
      * @return the list of entities.
      */
     List<Record> findAll();
-
+    List<Record> findAllByPatient(Patient patient);
 
     /**
      * Get the "id" record.

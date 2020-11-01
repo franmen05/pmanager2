@@ -1,22 +1,22 @@
 package com.pmanager.web.rest;
 
+import com.pmanager.domain.Patient;
 import com.pmanager.domain.Record;
 import com.pmanager.service.RecordService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.pmanager.domain.Record}.
@@ -24,7 +24,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class RecordResource {
-
     private final Logger log = LoggerFactory.getLogger(RecordResource.class);
 
     private static final String ENTITY_NAME = "record";
@@ -52,7 +51,8 @@ public class RecordResource {
             throw new BadRequestAlertException("A new record cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Record result = recordService.save(record);
-        return ResponseEntity.created(new URI("/api/records/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/records/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -73,7 +73,8 @@ public class RecordResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Record result = recordService.save(record);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, record.getId().toString()))
             .body(result);
     }
@@ -102,6 +103,12 @@ public class RecordResource {
         return ResponseUtil.wrapOrNotFound(record);
     }
 
+    @GetMapping("/records/patient/{id}")
+    public List<Record> getAllRecordsByPatientId(@PathVariable Long id) {
+        log.debug("REST request to get Record by patient: {}", id);
+        return recordService.findAllByPatient(new Patient(id));
+    }
+
     /**
      * {@code DELETE  /records/:id} : delete the "id" record.
      *
@@ -112,6 +119,9 @@ public class RecordResource {
     public ResponseEntity<Void> deleteRecord(@PathVariable Long id) {
         log.debug("REST request to delete Record : {}", id);
         recordService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

@@ -7,10 +7,11 @@ import { RecordDetailComponent } from './record-detail.component';
 import { RecordUpdateComponent } from './record-update.component';
 import { RecordDeleteDialogComponent } from './record-delete-dialog.component';
 import { recordRoute } from './record.route';
+import { RecordHistoryComponent } from './record-history.component';
 
 @NgModule({
   imports: [PmanagerSharedModule, RouterModule.forChild(recordRoute)],
-  declarations: [RecordComponent, RecordDetailComponent, RecordUpdateComponent, RecordDeleteDialogComponent],
+  declarations: [RecordComponent, RecordDetailComponent, RecordUpdateComponent, RecordDeleteDialogComponent, RecordHistoryComponent],
   entryComponents: [RecordDeleteDialogComponent],
 })
 export class PmanagerRecordModule {}

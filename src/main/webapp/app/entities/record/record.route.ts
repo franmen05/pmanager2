@@ -11,6 +11,7 @@ import { RecordService } from './record.service';
 import { RecordComponent } from './record.component';
 import { RecordDetailComponent } from './record-detail.component';
 import { RecordUpdateComponent } from './record-update.component';
+import { RecordHistoryComponent } from './record-history.component';
 
 @Injectable({ providedIn: 'root' })
 export class RecordResolve implements Resolve<IRecord> {
@@ -37,6 +38,15 @@ export class RecordResolve implements Resolve<IRecord> {
 export const recordRoute: Routes = [
   {
     path: '',
+    component: RecordHistoryComponent,
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Records',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'patient/:id',
     component: RecordComponent,
     data: {
       authorities: [Authority.USER],

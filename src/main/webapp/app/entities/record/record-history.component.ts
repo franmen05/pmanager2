@@ -3,31 +3,23 @@ import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
 
 import { IRecord } from 'app/shared/model/record.model';
 import { RecordService } from './record.service';
 import { RecordDeleteDialogComponent } from './record-delete-dialog.component';
-import { PatientService } from '../patient/patient.service';
 
 @Component({
   selector: 'jhi-record',
-  templateUrl: './record.component.html',
+  templateUrl: './record-history.component.html',
 })
-export class RecordComponent implements OnInit, OnDestroy {
+export class RecordHistoryComponent implements OnInit, OnDestroy {
   records?: IRecord[];
   eventSubscriber?: Subscription;
 
-  constructor(
-    protected recordService: RecordService,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-    private route: ActivatedRoute
-  ) {}
+  constructor(protected recordService: RecordService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
   loadAll(): void {
-    const id = this.route.snapshot.params['id'];
-    this.recordService.findAllByPatient(id).subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
+    this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
   }
 
   ngOnInit(): void {
