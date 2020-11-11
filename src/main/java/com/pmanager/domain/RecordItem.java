@@ -3,15 +3,17 @@ package com.pmanager.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 /**
- * A Prescription.
+ * A RecordItem.
  */
 @Entity
-@Table(name = "prescription")
-public class Prescription implements Serializable {
+@Table(name = "record_item")
+public class RecordItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,13 +31,12 @@ public class Prescription implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
-    private Record record;
+    @OneToMany(mappedBy = "recordItem")
+    private Set<Prescription> presciptions = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
-    private RecordItem recordItem;
+    @JsonIgnoreProperties(value = "items", allowSetters = true)
+    private Record record;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -50,22 +51,9 @@ public class Prescription implements Serializable {
         return description;
     }
 
-    public Prescription description(String description) {
+    public RecordItem description(String description) {
         this.description = description;
         return this;
-    }
-
-    public RecordItem getRecordItem() {
-        return recordItem;
-    }
-
-    public Prescription recordItem(RecordItem recordItem) {
-        this.recordItem = recordItem;
-        return this;
-    }
-
-    public void setRecordItem(RecordItem recordItem) {
-        this.recordItem = recordItem;
     }
 
     public void setDescription(String description) {
@@ -76,7 +64,7 @@ public class Prescription implements Serializable {
         return createDate;
     }
 
-    public Prescription createDate(Instant createDate) {
+    public RecordItem createDate(Instant createDate) {
         this.createDate = createDate;
         return this;
     }
@@ -89,7 +77,7 @@ public class Prescription implements Serializable {
         return lastUpdateDate;
     }
 
-    public Prescription lastUpdateDate(Instant lastUpdateDate) {
+    public RecordItem lastUpdateDate(Instant lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
         return this;
     }
@@ -98,11 +86,36 @@ public class Prescription implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
+    public Set<Prescription> getPresciptions() {
+        return presciptions;
+    }
+
+    public RecordItem presciptions(Set<Prescription> prescriptions) {
+        this.presciptions = prescriptions;
+        return this;
+    }
+
+    public RecordItem addPresciption(Prescription prescription) {
+        this.presciptions.add(prescription);
+        prescription.setRecordItem(this);
+        return this;
+    }
+
+    public RecordItem removePresciption(Prescription prescription) {
+        this.presciptions.remove(prescription);
+        prescription.setRecordItem(null);
+        return this;
+    }
+
+    public void setPresciptions(Set<Prescription> prescriptions) {
+        this.presciptions = prescriptions;
+    }
+
     public Record getRecord() {
         return record;
     }
 
-    public Prescription record(Record record) {
+    public RecordItem record(Record record) {
         this.record = record;
         return this;
     }
@@ -118,10 +131,10 @@ public class Prescription implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Prescription)) {
+        if (!(o instanceof RecordItem)) {
             return false;
         }
-        return id != null && id.equals(((Prescription) o).id);
+        return id != null && id.equals(((RecordItem) o).id);
     }
 
     @Override
@@ -132,7 +145,7 @@ public class Prescription implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Prescription{" +
+        return "RecordItem{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
             ", createDate='" + getCreateDate() + "'" +

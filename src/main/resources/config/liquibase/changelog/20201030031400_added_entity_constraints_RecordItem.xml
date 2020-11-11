@@ -4,16 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
     <!--
-        Added the constraints for entity Turn.
+        Added the constraints for entity RecordItem.
     -->
-    <changeSet id="20201019013249-2" author="jhipster">
-
-        <addForeignKeyConstraint baseColumnNames="patient_id"
-                                 baseTableName="turn"
-                                 constraintName="fk_turn_patient_id"
+    <changeSet id="20201030031400-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="record_id"
+                                 baseTableName="record_item"
+                                 constraintName="fk_record_item_record_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="patient"/>
-
+                                 referencedTableName="record"/>
 
     </changeSet>
 </databaseChangeLog>

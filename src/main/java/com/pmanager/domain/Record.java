@@ -32,6 +32,9 @@ public class Record implements Serializable {
     private Instant lastUpdateDate;
 
     @OneToMany(mappedBy = "record")
+    private Set<RecordItem> items = new HashSet<>();
+
+    @OneToMany(mappedBy = "record")
     private Set<Prescription> presciptions = new HashSet<>();
 
     @OneToMany(mappedBy = "record")
