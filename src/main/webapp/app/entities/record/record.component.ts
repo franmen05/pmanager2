@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 import { IRecord } from 'app/shared/model/record.model';
 import { RecordService } from './record.service';
 import { RecordDeleteDialogComponent } from './record-delete-dialog.component';
-import { PatientService } from '../patient/patient.service';
 
 @Component({
   selector: 'jhi-record',
