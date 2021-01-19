@@ -1,5 +1,7 @@
 package com.pmanager.web.rest;
 
+import com.pmanager.domain.Patient;
+import com.pmanager.domain.Record;
 import com.pmanager.domain.RecordItem;
 import com.pmanager.service.RecordItemService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
@@ -99,6 +101,12 @@ public class RecordItemResource {
         log.debug("REST request to get RecordItem : {}", id);
         Optional<RecordItem> recordItem = recordItemService.findOne(id);
         return ResponseUtil.wrapOrNotFound(recordItem);
+    }
+
+    @GetMapping("/record-items/patient/{id}")
+    public List<RecordItem> getAllRecordsByPatientId(@PathVariable Long id) {
+        log.debug("REST request to get Record by patient: {}", id);
+        return recordItemService.findAllByPatient(new Patient(id));
     }
 
     /**

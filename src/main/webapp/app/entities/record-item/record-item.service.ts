@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IRecordItem } from 'app/shared/model/record-item.model';
+import { IRecord } from '../../shared/model/record.model';
 
 type EntityResponseType = HttpResponse<IRecordItem>;
 type EntityArrayResponseType = HttpResponse<IRecordItem[]>;
@@ -35,6 +36,13 @@ export class RecordItemService {
     return this.http
       .get<IRecordItem>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  findAllByPatient(id: number): Observable<EntityArrayResponseType> {
+    // const options = createRequestOption(req);
+    return this.http
+      .get<IRecordItem[]>(`${this.resourceUrl}/patient/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

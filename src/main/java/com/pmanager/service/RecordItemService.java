@@ -1,5 +1,7 @@
 package com.pmanager.service;
 
+import com.pmanager.domain.Patient;
+import com.pmanager.domain.Record;
 import com.pmanager.domain.RecordItem;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,8 @@ public interface RecordItemService {
      * @return the entity.
      */
     Optional<RecordItem> findOne(Long id);
+
+    List<RecordItem> findAllByPatient(Patient patient);
 
     /**
      * Delete the "id" recordItem.

@@ -45,6 +45,15 @@ export const recordItemRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: 'patient/:id',
+    component: RecordItemComponent,
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Records',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: ':id/view',
     component: RecordItemDetailComponent,
     resolve: {

@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IRecordItem } from 'app/shared/model/record-item.model';
 import { RecordItemService } from './record-item.service';
 import { RecordItemDeleteDialogComponent } from './record-item-delete-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-record-item',
@@ -16,10 +17,17 @@ export class RecordItemComponent implements OnInit, OnDestroy {
   recordItems?: IRecordItem[];
   eventSubscriber?: Subscription;
 
-  constructor(protected recordItemService: RecordItemService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
+  constructor(
+    protected recordItemService: RecordItemService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal,
+    private route: ActivatedRoute
+  ) {}
 
   loadAll(): void {
-    this.recordItemService.query().subscribe((res: HttpResponse<IRecordItem[]>) => (this.recordItems = res.body || []));
+    const id = this.route.snapshot.params['id'];
+    // this.recordItemService.query().subscribe((res: HttpResponse<IRecordItem[]>) => (this.recordItems = res.body || []));
+    this.recordItemService.findAllByPatient(id).subscribe((res: HttpResponse<IRecordItem[]>) => (this.recordItems = res.body || []));
   }
 
   ngOnInit(): void {

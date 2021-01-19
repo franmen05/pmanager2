@@ -1,6 +1,7 @@
 package com.pmanager.repository;
 
 import com.pmanager.domain.RecordItem;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface RecordItemRepository extends JpaRepository<RecordItem, Long> {}
+public interface RecordItemRepository extends JpaRepository<RecordItem, Long> {
+    List<RecordItem> findAllByRecordId(Long var1);
+}
