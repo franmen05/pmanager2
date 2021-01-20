@@ -1,17 +1,14 @@
 package com.pmanager.service;
 
 import com.pmanager.service.dto.PatientDTO;
-
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import java.util.Optional;
 
 /**
  * Service Interface for managing {@link com.pmanager.domain.Patient}.
  */
 public interface PatientService {
-
     /**
      * Save a patient.
      *
@@ -19,6 +16,7 @@ public interface PatientService {
      * @return the persisted entity.
      */
     PatientDTO save(PatientDTO patientDTO);
+    PatientDTO createPatient(PatientDTO patientDTO);
 
     /**
      * Get all the patients.
@@ -27,7 +25,6 @@ public interface PatientService {
      * @return the list of entities.
      */
     Page<PatientDTO> findAll(Pageable pageable);
-
 
     /**
      * Get the "id" patient.

@@ -38,7 +38,7 @@
                     <td>{{ medicalHistory.lastUpdateDate | date:'medium' }}</td>
                     <td>
                         <div *ngIf="medicalHistory.record">
-                            <a [routerLink]="['/record', medicalHistory.record?.id, 'view']" >{{ medicalHistory.record?.id }}</a>
+                            <a [routerLink]="['/medical-history/new/record/', medicalHistory.record?.id ]" >{{ medicalHistory.record?.description }}</a>
                         </div>
                     </td>
                     <td class="text-right">

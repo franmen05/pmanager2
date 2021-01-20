@@ -69,6 +69,18 @@ export const medicalHistoryRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: 'new/record/:idRecord',
+    component: MedicalHistoryUpdateComponent,
+    resolve: {
+      medicalHistory: MedicalHistoryResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'MedicalHistories',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: ':id/edit',
     component: MedicalHistoryUpdateComponent,
     resolve: {

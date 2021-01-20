@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.val;
 
 /**
  * A Record.
@@ -43,6 +44,15 @@ public class Record implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "records", allowSetters = true)
     private Patient patient;
+
+    public static Record create(Patient patient) {
+        val r = new Record();
+        r.patient = patient;
+        r.description = "Record de " + patient.getLastName() + ", " + patient.getFirstName();
+        r.createDate = Instant.now();
+        r.lastUpdateDate = Instant.now();
+        return r;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {

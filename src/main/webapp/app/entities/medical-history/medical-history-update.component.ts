@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, EMPTY } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { IMedicalHistory, MedicalHistory } from 'app/shared/model/medical-history.model';
 import { MedicalHistoryService } from './medical-history.service';
-import { IRecord } from 'app/shared/model/record.model';
+import { IRecord, Record } from 'app/shared/model/record.model';
 import { RecordService } from 'app/entities/record/record.service';
 
 @Component({
@@ -18,6 +18,7 @@ import { RecordService } from 'app/entities/record/record.service';
 })
 export class MedicalHistoryUpdateComponent implements OnInit {
   isSaving = false;
+  isFromPatientModule = false;
   records: IRecord[] = [];
 
   editForm = this.fb.group({
@@ -32,6 +33,7 @@ export class MedicalHistoryUpdateComponent implements OnInit {
     protected medicalHistoryService: MedicalHistoryService,
     protected recordService: RecordService,
     protected activatedRoute: ActivatedRoute,
+    protected router: Router,
     private fb: FormBuilder
   ) {}
 
@@ -43,9 +45,18 @@ export class MedicalHistoryUpdateComponent implements OnInit {
         medicalHistory.lastUpdateDate = today;
       }
 
-      this.updateForm(medicalHistory);
-
-      this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
+      const recordId = this.activatedRoute.snapshot.params['idRecord'];
+      if (recordId) {
+        this.recordService.find(recordId).subscribe((res: HttpResponse<IRecord>) => {
+          this.records.push(res.body || new Record(recordId));
+          medicalHistory.record = res.body;
+          this.isFromPatientModule = true;
+          this.updateForm(medicalHistory);
+        });
+      } else {
+        this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
+        this.updateForm(medicalHistory);
+      }
     });
   }
 
@@ -95,11 +106,13 @@ export class MedicalHistoryUpdateComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     this.isSaving = false;
+    this.isFromPatientModule = false;
     this.previousState();
   }
 
   protected onSaveError(): void {
     this.isSaving = false;
+    this.isFromPatientModule = false;
   }
 
   trackById(index: number, item: IRecord): any {
