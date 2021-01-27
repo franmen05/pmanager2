@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.val;
 
 /**
@@ -14,6 +15,7 @@ import lombok.val;
  */
 @Entity
 @Table(name = "record")
+@AllArgsConstructor
 public class Record implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -52,6 +54,12 @@ public class Record implements Serializable {
         r.createDate = Instant.now();
         r.lastUpdateDate = Instant.now();
         return r;
+    }
+
+    public Record() {}
+
+    public Record(Long id) {
+        this.id = id;
     }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

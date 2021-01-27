@@ -283,6 +283,7 @@ public class Patient implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
+            ", Record='" + getRecords() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", whatsapp='" + getWhatsapp() + "'" +
             ", cellNumber='" + getCellNumber() + "'" +

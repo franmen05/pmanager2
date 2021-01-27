@@ -22,7 +22,6 @@ export class PatientUpdateComponent implements OnInit {
     firstName: [null, [Validators.required]],
     lastName: [null, [Validators.required]],
     email: [null, []],
-    reEnrollment: [],
     phoneNumber: [],
     whatsapp: [],
     cellNumber: [],
@@ -57,7 +56,6 @@ export class PatientUpdateComponent implements OnInit {
       firstName: patient.firstName,
       lastName: patient.lastName,
       email: patient.email,
-      reEnrollment: patient.reEnrollment,
       phoneNumber: patient.phoneNumber,
       whatsapp: patient.whatsapp,
       cellNumber: patient.cellNumber,
@@ -90,7 +88,6 @@ export class PatientUpdateComponent implements OnInit {
       firstName: this.editForm.get(['firstName'])!.value,
       lastName: this.editForm.get(['lastName'])!.value,
       email: this.editForm.get(['email'])!.value,
-      reEnrollment: this.editForm.get(['reEnrollment'])!.value,
       phoneNumber: this.editForm.get(['phoneNumber'])!.value,
       whatsapp: this.editForm.get(['whatsapp'])!.value,
       cellNumber: this.editForm.get(['cellNumber'])!.value,
@@ -103,15 +100,17 @@ export class PatientUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPatient>>): void {
     result.subscribe(
-      () => this.onSaveSuccess(),
+      a => this.onSaveSuccess(a),
       () => this.onSaveError()
     );
   }
 
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(a: any): void {
+    console.debug(a);
     this.isSaving = false;
     // this.previousState();
-    this.router.navigate(['/medical-history/new']);
+    // this.router.navigate(['/medical-history/new']);
+    this.router.navigate([`/medical-history/new/record/${a.body.records[0].id}`]);
   }
 
   protected onSaveError(): void {

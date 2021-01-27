@@ -7,7 +7,6 @@ export interface IPatient {
   firstName?: string;
   lastName?: string;
   email?: string;
-  reEnrollment?: boolean;
   phoneNumber?: string;
   whatsapp?: string;
   cellNumber?: string;
@@ -26,7 +25,6 @@ export class Patient implements IPatient {
     public firstName?: string,
     public lastName?: string,
     public email?: string,
-    public reEnrollment?: boolean,
     public phoneNumber?: string,
     public whatsapp?: string,
     public cellNumber?: string,
@@ -38,7 +36,6 @@ export class Patient implements IPatient {
     public turns?: ITurn[],
     public fullName?: string
   ) {
-    this.reEnrollment = this.reEnrollment || false;
     this.firstName = '';
     this.lastName = '';
     this.fullName = `${this.lastName}, ${this.firstName}`;

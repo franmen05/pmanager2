@@ -7,6 +7,8 @@ import com.pmanager.service.PatientService;
 import com.pmanager.service.RecordService;
 import com.pmanager.service.dto.PatientDTO;
 import com.pmanager.service.mapper.PatientMapper;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import lombok.val;
 import org.slf4j.Logger;
@@ -52,7 +54,8 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientDTO createPatient(PatientDTO patientDTO) {
         val patient = this.persist(patientDTO);
-        recordService.save(Record.create(patient));
+        patient.setRecords(Collections.singleton(recordService.save(Record.create(patient))));
+        log.debug("Custuom: Patient: " + patient);
         return patientMapper.toDto(patient);
     }
 

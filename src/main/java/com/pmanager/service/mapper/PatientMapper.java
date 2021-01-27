@@ -1,9 +1,7 @@
 package com.pmanager.service.mapper;
 
-
 import com.pmanager.domain.*;
 import com.pmanager.service.dto.PatientDTO;
-
 import org.mapstruct.*;
 
 /**
@@ -11,9 +9,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface PatientMapper extends EntityMapper<PatientDTO, Patient> {
-
-
-    @Mapping(target = "records", ignore = true)
+    @Mapping(target = "records", ignore = false)
     @Mapping(target = "removeRecord", ignore = true)
     @Mapping(target = "turns", ignore = true)
     @Mapping(target = "removeTurn", ignore = true)

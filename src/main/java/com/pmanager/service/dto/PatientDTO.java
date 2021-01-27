@@ -1,17 +1,20 @@
 package com.pmanager.service.dto;
 
+import com.pmanager.domain.Record;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.Instant;
-import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Set;
+import javax.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A DTO for the {@link com.pmanager.domain.Patient} entity.
  */
 @ApiModel(description = "The Patient entity.")
 public class PatientDTO implements Serializable {
-    
     private Long id;
 
     /**
@@ -24,10 +27,7 @@ public class PatientDTO implements Serializable {
     @NotNull
     private String lastName;
 
-    
     private String email;
-
-    private Boolean reEnrollment;
 
     private String phoneNumber;
 
@@ -45,7 +45,10 @@ public class PatientDTO implements Serializable {
     @NotNull
     private Instant createDate;
 
-    
+    //    @NotNull
+    //    @Getter @Setter
+    private Set<Record> records;
+
     public Long getId() {
         return id;
     }
@@ -76,14 +79,6 @@ public class PatientDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Boolean isReEnrollment() {
-        return reEnrollment;
-    }
-
-    public void setReEnrollment(Boolean reEnrollment) {
-        this.reEnrollment = reEnrollment;
     }
 
     public String getPhoneNumber() {
@@ -142,6 +137,14 @@ public class PatientDTO implements Serializable {
         this.createDate = createDate;
     }
 
+    public Set<Record> getRecords() {
+        return records;
+    }
+
+    public void setRecords(Set<Record> records) {
+        this.records = records;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -167,7 +170,7 @@ public class PatientDTO implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
-            ", reEnrollment='" + isReEnrollment() + "'" +
+            ", Records='" + getRecords() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", whatsapp='" + getWhatsapp() + "'" +
             ", cellNumber='" + getCellNumber() + "'" +

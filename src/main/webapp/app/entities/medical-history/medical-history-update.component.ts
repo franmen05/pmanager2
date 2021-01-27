@@ -99,15 +99,16 @@ export class MedicalHistoryUpdateComponent implements OnInit {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMedicalHistory>>): void {
     result.subscribe(
-      () => this.onSaveSuccess(),
+      a => this.onSaveSuccess(a),
       () => this.onSaveError()
     );
   }
-
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(a: any): void {
+    console.debug(a);
     this.isSaving = false;
     this.isFromPatientModule = false;
-    this.previousState();
+    // this.previousState();
+    this.router.navigate([`/record-item/patient/${a.body.record.patient.id}`]);
   }
 
   protected onSaveError(): void {
