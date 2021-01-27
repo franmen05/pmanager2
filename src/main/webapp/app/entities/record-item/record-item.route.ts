@@ -34,6 +34,14 @@ export class RecordItemResolve implements Resolve<IRecordItem> {
   }
 }
 
+export class RecordItemResolve2 implements Resolve<IRecordItem> {
+  constructor(private service: RecordItemService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IRecordItem> | Observable<never> {
+    return of(new RecordItem());
+  }
+}
+
 export const recordItemRoute: Routes = [
   {
     path: '',
@@ -45,7 +53,7 @@ export const recordItemRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: 'patient/:id',
+    path: 'patient/:idPatient',
     component: RecordItemComponent,
     data: {
       authorities: [Authority.USER],
@@ -67,6 +75,18 @@ export const recordItemRoute: Routes = [
   },
   {
     path: 'new',
+    component: RecordItemUpdateComponent,
+    resolve: {
+      recordItem: RecordItemResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'RecordItems',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'new/record/:idRecord',
     component: RecordItemUpdateComponent,
     resolve: {
       recordItem: RecordItemResolve,

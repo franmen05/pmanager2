@@ -19,6 +19,7 @@ import { RecordService } from 'app/entities/record/record.service';
 export class RecordItemUpdateComponent implements OnInit {
   isSaving = false;
   records: IRecord[] = [];
+  recordId?: number;
 
   editForm = this.fb.group({
     id: [],
@@ -32,10 +33,13 @@ export class RecordItemUpdateComponent implements OnInit {
     protected recordItemService: RecordItemService,
     protected recordService: RecordService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.recordId = this.route.snapshot.params['idRecord'];
+
     this.activatedRoute.data.subscribe(({ recordItem }) => {
       if (!recordItem.id) {
         const today = moment().startOf('day');
@@ -44,7 +48,6 @@ export class RecordItemUpdateComponent implements OnInit {
       }
 
       this.updateForm(recordItem);
-
       this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
     });
   }
@@ -69,6 +72,11 @@ export class RecordItemUpdateComponent implements OnInit {
     if (recordItem.id !== undefined) {
       this.subscribeToSaveResponse(this.recordItemService.update(recordItem));
     } else {
+      if (!recordItem.record) {
+        const r = new RecordItem();
+        r.id = this.recordId;
+        recordItem.record = r;
+      }
       this.subscribeToSaveResponse(this.recordItemService.create(recordItem));
     }
   }

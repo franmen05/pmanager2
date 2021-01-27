@@ -33,6 +33,14 @@ export class MedicalHistoryResolve implements Resolve<IMedicalHistory> {
     return of(new MedicalHistory());
   }
 }
+@Injectable({ providedIn: 'root' })
+export class RecordResolve implements Resolve<IMedicalHistory> {
+  constructor(private service: MedicalHistoryService, private router: Router) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<IMedicalHistory> | Observable<never> {
+    return of(new MedicalHistory());
+  }
+}
 
 export const medicalHistoryRoute: Routes = [
   {
@@ -72,7 +80,7 @@ export const medicalHistoryRoute: Routes = [
     path: 'new/record/:idRecord',
     component: MedicalHistoryUpdateComponent,
     resolve: {
-      medicalHistory: MedicalHistoryResolve,
+      medicalHistory: RecordResolve,
     },
     data: {
       authorities: [Authority.USER],

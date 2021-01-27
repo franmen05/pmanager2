@@ -150,6 +150,7 @@ public class RecordItem implements Serializable {
             ", description='" + getDescription() + "'" +
             ", createDate='" + getCreateDate() + "'" +
             ", lastUpdateDate='" + getLastUpdateDate() + "'" +
+            ", record='" + getRecord() + "'" +
             "}";
     }
 }

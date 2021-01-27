@@ -47,7 +47,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" [hidden]="recordId">
                     <label class="form-control-label" for="field_record">Record</label>
                     <select class="form-control" id="field_record" name="record" formControlName="record">
                         <option [ngValue]="null"></option>
