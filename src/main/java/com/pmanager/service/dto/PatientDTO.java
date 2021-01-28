@@ -1,5 +1,6 @@
 package com.pmanager.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pmanager.domain.Record;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,6 +48,7 @@ public class PatientDTO implements Serializable {
 
     //    @NotNull
     //    @Getter @Setter
+    @JsonIgnoreProperties(value = "patient", allowSetters = true)
     private Set<Record> records;
 
     public Long getId() {

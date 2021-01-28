@@ -9,10 +9,16 @@
             </span>
         </button>
 
-        <button id="jh-create-entity2" class="btn btn-primary float-right jh-create-entity create-record-item" [routerLink]="['/record-item/new/record/', idRecord]">
+        <button id="jh-create-entity2" class="btn btn-primary ml-1 float-right jh-create-entity create-record-item" [routerLink]="['/record-item/new/record/', idRecord]">
             <fa-icon icon="plus"></fa-icon>
             <span>
             Nueva Entrada
+            </span>
+        </button>
+        <button id="jh-see-medical-history" class="btn btn-info ml-1 float-right jh-create-entity create-record-item" [routerLink]="['/medical-history/', idMedicalHistory,'view']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Ver Historial Medico
             </span>
         </button>
     </h2>
@@ -33,7 +39,7 @@
                     <th scope="col" ><span>Description</span></th>
                     <th scope="col" ><span>Create Date</span></th>
                     <th scope="col" ><span>Last Update Date</span></th>
-                    <th scope="col" ><span>Record</span></th>
+<!--                    <th scope="col" ><span>Record</span></th>-->
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -43,11 +49,11 @@
                     <td>{{ recordItem.description }}</td>
                     <td>{{ recordItem.createDate | date:'medium' }}</td>
                     <td>{{ recordItem.lastUpdateDate | date:'medium' }}</td>
-                    <td>
-                        <div *ngIf="recordItem.record">
-                            <a [routerLink]="['/record', recordItem.record?.id, 'view']" >{{ recordItem.record?.id }}</a>
-                        </div>
-                    </td>
+<!--                    <td>-->
+<!--                        <div *ngIf="recordItem.record">-->
+<!--                            <a [routerLink]="['/record', recordItem.record?.id, 'view']" >{{ recordItem.record?.id }}</a>-->
+<!--                        </div>-->
+<!--                    </td>-->
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

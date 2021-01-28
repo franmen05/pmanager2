@@ -3,20 +3,18 @@ package com.pmanager.web.rest;
 import com.pmanager.domain.MedicalHistory;
 import com.pmanager.service.MedicalHistoryService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.pmanager.domain.MedicalHistory}.
@@ -24,7 +22,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class MedicalHistoryResource {
-
     private final Logger log = LoggerFactory.getLogger(MedicalHistoryResource.class);
 
     private static final String ENTITY_NAME = "medicalHistory";
@@ -46,13 +43,15 @@ public class MedicalHistoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/medical-histories")
-    public ResponseEntity<MedicalHistory> createMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) throws URISyntaxException {
+    public ResponseEntity<MedicalHistory> createMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory)
+        throws URISyntaxException {
         log.debug("REST request to save MedicalHistory : {}", medicalHistory);
         if (medicalHistory.getId() != null) {
             throw new BadRequestAlertException("A new medicalHistory cannot already have an ID", ENTITY_NAME, "idexists");
         }
         MedicalHistory result = medicalHistoryService.save(medicalHistory);
-        return ResponseEntity.created(new URI("/api/medical-histories/" + result.getId()))
+        return ResponseEntity
+            .created(new URI("/api/medical-histories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
@@ -67,13 +66,15 @@ public class MedicalHistoryResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/medical-histories")
-    public ResponseEntity<MedicalHistory> updateMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory) throws URISyntaxException {
+    public ResponseEntity<MedicalHistory> updateMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory)
+        throws URISyntaxException {
         log.debug("REST request to update MedicalHistory : {}", medicalHistory);
         if (medicalHistory.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         MedicalHistory result = medicalHistoryService.save(medicalHistory);
-        return ResponseEntity.ok()
+        return ResponseEntity
+            .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, medicalHistory.getId().toString()))
             .body(result);
     }
@@ -102,6 +103,13 @@ public class MedicalHistoryResource {
         return ResponseUtil.wrapOrNotFound(medicalHistory);
     }
 
+    @GetMapping("/medical-histories/record/{id}")
+    public ResponseEntity<MedicalHistory> getMedicalHistoryByRecord(@PathVariable Long id) {
+        log.debug("REST request to get MedicalHistory : {}", id);
+        Optional<MedicalHistory> medicalHistory = medicalHistoryService.findByRecord(id);
+        return ResponseUtil.wrapOrNotFound(medicalHistory);
+    }
+
     /**
      * {@code DELETE  /medical-histories/:id} : delete the "id" medicalHistory.
      *
@@ -112,6 +120,9 @@ public class MedicalHistoryResource {
     public ResponseEntity<Void> deleteMedicalHistory(@PathVariable Long id) {
         log.debug("REST request to delete MedicalHistory : {}", id);
         medicalHistoryService.delete(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity
+            .noContent()
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .build();
     }
 }

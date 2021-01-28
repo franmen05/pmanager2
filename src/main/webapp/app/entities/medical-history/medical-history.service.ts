@@ -7,6 +7,8 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IMedicalHistory } from 'app/shared/model/medical-history.model';
+import { IRecordItem } from '../../shared/model/record-item.model';
+import { IRecord } from '../../shared/model/record.model';
 
 type EntityResponseType = HttpResponse<IMedicalHistory>;
 type EntityArrayResponseType = HttpResponse<IMedicalHistory[]>;
@@ -28,6 +30,12 @@ export class MedicalHistoryService {
     const copy = this.convertDateFromClient(medicalHistory);
     return this.http
       .put<IMedicalHistory>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+  findByRecord(id: number): Observable<EntityResponseType> {
+    // const options = createRequestOption(req);
+    return this.http
+      .get<IMedicalHistory>(`${this.resourceUrl}/record/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

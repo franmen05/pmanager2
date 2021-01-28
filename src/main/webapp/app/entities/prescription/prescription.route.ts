@@ -69,6 +69,18 @@ export const prescriptionRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: 'new/record/:recordItemId',
+    component: PrescriptionUpdateComponent,
+    resolve: {
+      prescription: PrescriptionResolve,
+    },
+    data: {
+      authorities: [Authority.USER],
+      pageTitle: 'Prescriptions',
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: ':id/edit',
     component: PrescriptionUpdateComponent,
     resolve: {

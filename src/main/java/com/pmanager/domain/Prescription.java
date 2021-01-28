@@ -29,9 +29,9 @@ public class Prescription implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
-    private Record record;
+    //    @ManyToOne
+    //    @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
+    //    private Record record;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "presciptions", allowSetters = true)
@@ -98,18 +98,18 @@ public class Prescription implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Record getRecord() {
-        return record;
-    }
-
-    public Prescription record(Record record) {
-        this.record = record;
-        return this;
-    }
-
-    public void setRecord(Record record) {
-        this.record = record;
-    }
+    //    public Record getRecord() {
+    //        return record;
+    //    }
+    //
+    //    public Prescription record(Record record) {
+    //        this.record = record;
+    //        return this;
+    //    }
+    //
+    //    public void setRecord(Record record) {
+    //        this.record = record;
+    //    }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

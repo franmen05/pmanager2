@@ -1,7 +1,6 @@
 package com.pmanager.service;
 
 import com.pmanager.domain.MedicalHistory;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +8,6 @@ import java.util.Optional;
  * Service Interface for managing {@link MedicalHistory}.
  */
 public interface MedicalHistoryService {
-
     /**
      * Save a medicalHistory.
      *
@@ -25,7 +23,6 @@ public interface MedicalHistoryService {
      */
     List<MedicalHistory> findAll();
 
-
     /**
      * Get the "id" medicalHistory.
      *
@@ -33,6 +30,7 @@ public interface MedicalHistoryService {
      * @return the entity.
      */
     Optional<MedicalHistory> findOne(Long id);
+    Optional<MedicalHistory> findByRecord(Long id);
 
     /**
      * Delete the "id" medicalHistory.

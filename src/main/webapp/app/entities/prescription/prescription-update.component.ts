@@ -11,6 +11,7 @@ import { IPrescription, Prescription } from 'app/shared/model/prescription.model
 import { PrescriptionService } from './prescription.service';
 import { IRecord } from 'app/shared/model/record.model';
 import { RecordService } from 'app/entities/record/record.service';
+import { RecordItem } from '../../shared/model/record-item.model';
 
 @Component({
   selector: 'jhi-prescription-update',
@@ -19,6 +20,7 @@ import { RecordService } from 'app/entities/record/record.service';
 export class PrescriptionUpdateComponent implements OnInit {
   isSaving = false;
   records: IRecord[] = [];
+  recordItemId?: number;
 
   editForm = this.fb.group({
     id: [],
@@ -36,6 +38,8 @@ export class PrescriptionUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.recordItemId = this.activatedRoute.snapshot.params['recordItemId'];
+
     this.activatedRoute.data.subscribe(({ prescription }) => {
       if (!prescription.id) {
         const today = moment().startOf('day');
@@ -69,6 +73,11 @@ export class PrescriptionUpdateComponent implements OnInit {
     if (prescription.id !== undefined) {
       this.subscribeToSaveResponse(this.prescriptionService.update(prescription));
     } else {
+      if (!prescription.record) {
+        const r = new RecordItem();
+        r.id = this.recordItemId;
+        prescription.record = r;
+      }
       this.subscribeToSaveResponse(this.prescriptionService.create(prescription));
     }
   }

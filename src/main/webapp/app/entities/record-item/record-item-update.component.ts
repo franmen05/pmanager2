@@ -33,12 +33,11 @@ export class RecordItemUpdateComponent implements OnInit {
     protected recordItemService: RecordItemService,
     protected recordService: RecordService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
-    private route: ActivatedRoute
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.recordId = this.route.snapshot.params['idRecord'];
+    this.recordId = this.activatedRoute.snapshot.params['idRecord'];
 
     this.activatedRoute.data.subscribe(({ recordItem }) => {
       if (!recordItem.id) {

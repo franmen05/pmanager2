@@ -10,6 +10,8 @@ import { RecordItemDeleteDialogComponent } from './record-item-delete-dialog.com
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from '../patient/patient.service';
 import { IPatient } from '../../shared/model/patient.model';
+import { IMedicalHistory, MedicalHistory } from '../../shared/model/medical-history.model';
+import { MedicalHistoryService } from '../medical-history/medical-history.service';
 
 @Component({
   selector: 'jhi-record-item',
@@ -20,9 +22,11 @@ export class RecordItemComponent implements OnInit, OnDestroy {
   eventSubscriber?: Subscription;
   idPatient?: number;
   idRecord?: number;
+  idMedicalHistory?: number;
 
   constructor(
     protected recordItemService: RecordItemService,
+    protected medicalHistoryService: MedicalHistoryService,
     protected patientService: PatientService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
@@ -36,11 +40,24 @@ export class RecordItemComponent implements OnInit, OnDestroy {
       this.recordItemService
         .findAllByPatient(this.idPatient)
         .subscribe((res: HttpResponse<IRecordItem[]>) => (this.recordItems = res.body || []));
-      if (this.recordItems) this.idRecord = this.recordItems.values().next().value.record?.id;
-      else
-        this.patientService
-          .find(this.idPatient)
-          .subscribe((res: HttpResponse<IPatient>) => (res.body?.records ? (this.idRecord = res.body.records[0].id) : undefined));
+      if (this.recordItems) {
+        const item = this.recordItems.values().next().value;
+        this.idRecord = item.record?.id;
+        if (this.idRecord)
+          this.medicalHistoryService
+            .findByRecord(this.idRecord)
+            .subscribe((res2: HttpResponse<IMedicalHistory>) => (this.idMedicalHistory = res2.body?.id));
+      } else
+        this.patientService.find(this.idPatient).subscribe((res: HttpResponse<IPatient>) => {
+          if (res.body?.records) {
+            const record = res.body.records[0];
+            this.idRecord = record.id;
+            if (this.idRecord)
+              this.medicalHistoryService
+                .findByRecord(this.idRecord)
+                .subscribe((res2: HttpResponse<IMedicalHistory>) => (this.idMedicalHistory = res2.body?.id));
+          }
+        });
     }
   }
 
