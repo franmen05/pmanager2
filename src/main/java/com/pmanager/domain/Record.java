@@ -37,8 +37,8 @@ public class Record implements Serializable {
     @OneToMany(mappedBy = "record")
     private Set<RecordItem> items = new HashSet<>();
 
-    @OneToMany(mappedBy = "record")
-    private Set<Prescription> presciptions = new HashSet<>();
+    //    @OneToMany(mappedBy = "record")
+    //    private Set<Prescription> presciptions = new HashSet<>();
 
     @OneToMany(mappedBy = "record")
     private Set<MedicalHistory> medicalHistories = new HashSet<>();
@@ -110,30 +110,30 @@ public class Record implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Set<Prescription> getPresciptions() {
-        return presciptions;
-    }
-
-    public Record presciptions(Set<Prescription> prescriptions) {
-        this.presciptions = prescriptions;
-        return this;
-    }
-
-    public Record addPresciption(Prescription prescription) {
-        this.presciptions.add(prescription);
-        prescription.setRecord(this);
-        return this;
-    }
-
-    public Record removePresciption(Prescription prescription) {
-        this.presciptions.remove(prescription);
-        prescription.setRecord(null);
-        return this;
-    }
-
-    public void setPresciptions(Set<Prescription> prescriptions) {
-        this.presciptions = prescriptions;
-    }
+    //    public Set<Prescription> getPresciptions() {
+    //        return presciptions;
+    //    }
+    //
+    //    public Record presciptions(Set<Prescription> prescriptions) {
+    //        this.presciptions = prescriptions;
+    //        return this;
+    //    }
+    //
+    //    public Record addPresciption(Prescription prescription) {
+    //        this.presciptions.add(prescription);
+    //        prescription.setRecord(this);
+    //        return this;
+    //    }
+    //
+    //    public Record removePresciption(Prescription prescription) {
+    //        this.presciptions.remove(prescription);
+    //        prescription.setRecord(null);
+    //        return this;
+    //    }
+    //
+    //    public void setPresciptions(Set<Prescription> prescriptions) {
+    //        this.presciptions = prescriptions;
+    //    }
 
     public Set<MedicalHistory> getMedicalHistories() {
         return medicalHistories;

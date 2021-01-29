@@ -10,7 +10,7 @@ export interface IRecord {
   createDate?: Moment;
   lastUpdateDate?: Moment;
   items?: IRecordItem[];
-  presciptions?: IPrescription[];
+  // presciptions?: IPrescription[];
   medicalHistories?: IMedicalHistory[];
   patient?: IPatient;
 }
@@ -22,7 +22,7 @@ export class Record implements IRecord {
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
     public items?: IRecordItem[],
-    public presciptions?: IPrescription[],
+    // public presciptions?: IPrescription[],
     public medicalHistories?: IMedicalHistory[],
     public patient?: IPatient
   ) {}

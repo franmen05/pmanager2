@@ -7,7 +7,7 @@ export interface IRecordItem {
   description?: string;
   createDate?: Moment;
   lastUpdateDate?: Moment;
-  presciptions?: IPrescription[];
+  prescriptions?: IPrescription[];
   record?: IRecord;
 }
 
@@ -17,7 +17,7 @@ export class RecordItem implements IRecordItem {
     public description?: string,
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
-    public presciptions?: IPrescription[],
+    public prescriptions?: IPrescription[],
     public record?: IRecord
   ) {}
 }
