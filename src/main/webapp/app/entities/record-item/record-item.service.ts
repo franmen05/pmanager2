@@ -7,7 +7,6 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IRecordItem } from 'app/shared/model/record-item.model';
-import { IRecord } from '../../shared/model/record.model';
 
 type EntityResponseType = HttpResponse<IRecordItem>;
 type EntityArrayResponseType = HttpResponse<IRecordItem[]>;

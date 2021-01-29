@@ -10,7 +10,7 @@ import { RecordItemDeleteDialogComponent } from './record-item-delete-dialog.com
 import { ActivatedRoute } from '@angular/router';
 import { PatientService } from '../patient/patient.service';
 import { IPatient } from '../../shared/model/patient.model';
-import { IMedicalHistory, MedicalHistory } from '../../shared/model/medical-history.model';
+import { IMedicalHistory } from '../../shared/model/medical-history.model';
 import { MedicalHistoryService } from '../medical-history/medical-history.service';
 
 @Component({

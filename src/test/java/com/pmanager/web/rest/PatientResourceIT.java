@@ -1,12 +1,20 @@
 package com.pmanager.web.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.pmanager.PmanagerApp;
 import com.pmanager.domain.Patient;
 import com.pmanager.repository.PatientRepository;
 import com.pmanager.service.PatientService;
 import com.pmanager.service.dto.PatientDTO;
 import com.pmanager.service.mapper.PatientMapper;
-
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link PatientResource} REST controller.
@@ -33,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 public class PatientResourceIT {
-
     private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
     private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
 
@@ -95,7 +93,6 @@ public class PatientResourceIT {
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .email(DEFAULT_EMAIL)
-            .reEnrollment(DEFAULT_RE_ENROLLMENT)
             .phoneNumber(DEFAULT_PHONE_NUMBER)
             .whatsapp(DEFAULT_WHATSAPP)
             .cellNumber(DEFAULT_CELL_NUMBER)
@@ -105,6 +102,7 @@ public class PatientResourceIT {
             .createDate(DEFAULT_CREATE_DATE);
         return patient;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -116,7 +114,6 @@ public class PatientResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
-            .reEnrollment(UPDATED_RE_ENROLLMENT)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .whatsapp(UPDATED_WHATSAPP)
             .cellNumber(UPDATED_CELL_NUMBER)
@@ -138,9 +135,8 @@ public class PatientResourceIT {
         int databaseSizeBeforeCreate = patientRepository.findAll().size();
         // Create the Patient
         PatientDTO patientDTO = patientMapper.toDto(patient);
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Patient in the database
@@ -150,7 +146,6 @@ public class PatientResourceIT {
         assertThat(testPatient.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testPatient.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testPatient.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testPatient.isReEnrollment()).isEqualTo(DEFAULT_RE_ENROLLMENT);
         assertThat(testPatient.getPhoneNumber()).isEqualTo(DEFAULT_PHONE_NUMBER);
         assertThat(testPatient.getWhatsapp()).isEqualTo(DEFAULT_WHATSAPP);
         assertThat(testPatient.getCellNumber()).isEqualTo(DEFAULT_CELL_NUMBER);
@@ -170,16 +165,14 @@ public class PatientResourceIT {
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Patient in the database
         List<Patient> patientList = patientRepository.findAll();
         assertThat(patientList).hasSize(databaseSizeBeforeCreate);
     }
-
 
     @Test
     @Transactional
@@ -191,10 +184,8 @@ public class PatientResourceIT {
         // Create the Patient, which fails.
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
-
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         List<Patient> patientList = patientRepository.findAll();
@@ -211,10 +202,8 @@ public class PatientResourceIT {
         // Create the Patient, which fails.
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
-
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         List<Patient> patientList = patientRepository.findAll();
@@ -231,10 +220,8 @@ public class PatientResourceIT {
         // Create the Patient, which fails.
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
-
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         List<Patient> patientList = patientRepository.findAll();
@@ -251,10 +238,8 @@ public class PatientResourceIT {
         // Create the Patient, which fails.
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
-
-        restPatientMockMvc.perform(post("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(post("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         List<Patient> patientList = patientRepository.findAll();
@@ -268,7 +253,8 @@ public class PatientResourceIT {
         patientRepository.saveAndFlush(patient);
 
         // Get all the patientList
-        restPatientMockMvc.perform(get("/api/patients?sort=id,desc"))
+        restPatientMockMvc
+            .perform(get("/api/patients?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(patient.getId().intValue())))
@@ -284,7 +270,7 @@ public class PatientResourceIT {
             .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getPatient() throws Exception {
@@ -292,7 +278,8 @@ public class PatientResourceIT {
         patientRepository.saveAndFlush(patient);
 
         // Get the patient
-        restPatientMockMvc.perform(get("/api/patients/{id}", patient.getId()))
+        restPatientMockMvc
+            .perform(get("/api/patients/{id}", patient.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(patient.getId().intValue()))
@@ -308,12 +295,12 @@ public class PatientResourceIT {
             .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingPatient() throws Exception {
         // Get the patient
-        restPatientMockMvc.perform(get("/api/patients/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restPatientMockMvc.perform(get("/api/patients/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -332,7 +319,6 @@ public class PatientResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
-            .reEnrollment(UPDATED_RE_ENROLLMENT)
             .phoneNumber(UPDATED_PHONE_NUMBER)
             .whatsapp(UPDATED_WHATSAPP)
             .cellNumber(UPDATED_CELL_NUMBER)
@@ -342,9 +328,8 @@ public class PatientResourceIT {
             .createDate(UPDATED_CREATE_DATE);
         PatientDTO patientDTO = patientMapper.toDto(updatedPatient);
 
-        restPatientMockMvc.perform(put("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(put("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isOk());
 
         // Validate the Patient in the database
@@ -354,7 +339,6 @@ public class PatientResourceIT {
         assertThat(testPatient.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testPatient.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testPatient.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testPatient.isReEnrollment()).isEqualTo(UPDATED_RE_ENROLLMENT);
         assertThat(testPatient.getPhoneNumber()).isEqualTo(UPDATED_PHONE_NUMBER);
         assertThat(testPatient.getWhatsapp()).isEqualTo(UPDATED_WHATSAPP);
         assertThat(testPatient.getCellNumber()).isEqualTo(UPDATED_CELL_NUMBER);
@@ -373,9 +357,8 @@ public class PatientResourceIT {
         PatientDTO patientDTO = patientMapper.toDto(patient);
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restPatientMockMvc.perform(put("/api/patients")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(patientDTO)))
+        restPatientMockMvc
+            .perform(put("/api/patients").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(patientDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Patient in the database
@@ -392,8 +375,8 @@ public class PatientResourceIT {
         int databaseSizeBeforeDelete = patientRepository.findAll().size();
 
         // Delete the patient
-        restPatientMockMvc.perform(delete("/api/patients/{id}", patient.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restPatientMockMvc
+            .perform(delete("/api/patients/{id}", patient.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

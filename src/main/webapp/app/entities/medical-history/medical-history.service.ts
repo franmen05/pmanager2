@@ -7,8 +7,6 @@ import * as moment from 'moment';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IMedicalHistory } from 'app/shared/model/medical-history.model';
-import { IRecordItem } from '../../shared/model/record-item.model';
-import { IRecord } from '../../shared/model/record.model';
 
 type EntityResponseType = HttpResponse<IMedicalHistory>;
 type EntityArrayResponseType = HttpResponse<IMedicalHistory[]>;
