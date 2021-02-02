@@ -28,10 +28,10 @@ public class MedicalHistoryConfig implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Getter
-    @Setter
+    //    @Getter
+    //    @Setter
     //    @NotNull
-    @Column(name = "type", nullable = false)
+    @Column(name = "jhi_type", nullable = false)
     private String type;
 
     @Column(name = "create_date")
@@ -57,6 +57,14 @@ public class MedicalHistoryConfig implements Serializable {
 
     public String getKey() {
         return key;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public MedicalHistoryConfig key(String key) {
