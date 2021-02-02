@@ -1,12 +1,12 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A MedicalHistoryConfig.
@@ -14,7 +14,6 @@ import java.time.Instant;
 @Entity
 @Table(name = "medical_history_config")
 public class MedicalHistoryConfig implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -29,6 +28,12 @@ public class MedicalHistoryConfig implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Getter
+    @Setter
+    //    @NotNull
+    @Column(name = "type", nullable = false)
+    private String type;
+
     @Column(name = "create_date")
     private Instant createDate;
 
@@ -36,9 +41,10 @@ public class MedicalHistoryConfig implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "medicalHistories", allowSetters = true)
-    private MedicalHistory medicalHistory;
+    //
+    //    @ManyToOne
+    //    @JsonIgnoreProperties(value = "medicalHistories", allowSetters = true)
+    //    private MedicalHistory medicalHistory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -101,18 +107,17 @@ public class MedicalHistoryConfig implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public MedicalHistory getMedicalHistory() {
-        return medicalHistory;
-    }
-
-    public MedicalHistoryConfig medicalHistory(MedicalHistory medicalHistory) {
-        this.medicalHistory = medicalHistory;
-        return this;
-    }
-
-    public void setMedicalHistory(MedicalHistory medicalHistory) {
-        this.medicalHistory = medicalHistory;
-    }
+    //    public MedicalHistory getMedicalHistory() {
+    //        return medicalHistory;
+    //    }
+    //
+    //    public MedicalHistoryConfig medicalHistory(MedicalHistory medicalHistory) {
+    //        this.medicalHistory = medicalHistory;
+    //        return this;
+    //    }
+    //    public void setMedicalHistory(MedicalHistory medicalHistory) {
+    //        this.medicalHistory = medicalHistory;
+    //    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

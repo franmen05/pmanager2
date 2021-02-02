@@ -28,9 +28,7 @@
             <column name="last_update_date" type="datetime">
                 <constraints nullable="false" />
             </column>
-            <column name="medical_history_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="medical_history_config" columnName="create_date" columnDataType="datetime"/>

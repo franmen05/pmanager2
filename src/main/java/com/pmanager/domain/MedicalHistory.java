@@ -1,14 +1,12 @@
 package com.pmanager.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A MedicalHistory.
@@ -16,7 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "medical_history")
 public class MedicalHistory implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -34,8 +31,9 @@ public class MedicalHistory implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    @OneToMany(mappedBy = "medicalHistory")
-    private Set<MedicalHistoryConfig> medicalHistories = new HashSet<>();
+    //
+    //    @OneToMany(mappedBy = "medicalHistory")
+    //    private Set<MedicalHistoryConfig> medicalHistories = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties(value = "medicalHistories", allowSetters = true)
@@ -89,30 +87,30 @@ public class MedicalHistory implements Serializable {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public Set<MedicalHistoryConfig> getMedicalHistories() {
-        return medicalHistories;
-    }
-
-    public MedicalHistory medicalHistories(Set<MedicalHistoryConfig> medicalHistoryConfigs) {
-        this.medicalHistories = medicalHistoryConfigs;
-        return this;
-    }
-
-    public MedicalHistory addMedicalHistory(MedicalHistoryConfig medicalHistoryConfig) {
-        this.medicalHistories.add(medicalHistoryConfig);
-        medicalHistoryConfig.setMedicalHistory(this);
-        return this;
-    }
-
-    public MedicalHistory removeMedicalHistory(MedicalHistoryConfig medicalHistoryConfig) {
-        this.medicalHistories.remove(medicalHistoryConfig);
-        medicalHistoryConfig.setMedicalHistory(null);
-        return this;
-    }
-
-    public void setMedicalHistories(Set<MedicalHistoryConfig> medicalHistoryConfigs) {
-        this.medicalHistories = medicalHistoryConfigs;
-    }
+    //    public Set<MedicalHistoryConfig> getMedicalHistories() {
+    //        return medicalHistories;
+    //    }
+    //
+    //    public MedicalHistory medicalHistories(Set<MedicalHistoryConfig> medicalHistoryConfigs) {
+    //        this.medicalHistories = medicalHistoryConfigs;
+    //        return this;
+    //    }
+    //
+    //    public MedicalHistory addMedicalHistory(MedicalHistoryConfig medicalHistoryConfig) {
+    //        this.medicalHistories.add(medicalHistoryConfig);
+    //        medicalHistoryConfig.setMedicalHistory(this);
+    //        return this;
+    //    }
+    //
+    //    public MedicalHistory removeMedicalHistory(MedicalHistoryConfig medicalHistoryConfig) {
+    //        this.medicalHistories.remove(medicalHistoryConfig);
+    //        medicalHistoryConfig.setMedicalHistory(null);
+    //        return this;
+    //    }
+    //
+    //    public void setMedicalHistories(Set<MedicalHistoryConfig> medicalHistoryConfigs) {
+    //        this.medicalHistories = medicalHistoryConfigs;
+    //    }
 
     public Record getRecord() {
         return record;
@@ -126,6 +124,7 @@ public class MedicalHistory implements Serializable {
     public void setRecord(Record record) {
         this.record = record;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

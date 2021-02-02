@@ -7,12 +7,12 @@
         Added the constraints for entity MedicalHistoryConfig.
     -->
     <changeSet id="20201019013149-2" author="jhipster">
-        
-        <addForeignKeyConstraint baseColumnNames="medical_history_id"
-                                 baseTableName="medical_history_config"
-                                 constraintName="fk_medical_history_config_medical_history_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="medical_history"/>
+
+<!--        <addForeignKeyConstraint baseColumnNames="medical_history_id"-->
+<!--                                 baseTableName="medical_history_config"-->
+<!--                                 constraintName="fk_medical_history_config_medical_history_id"-->
+<!--                                 referencedColumnNames="id"-->
+<!--                                 referencedTableName="medical_history"/>-->
 
     </changeSet>
 </databaseChangeLog>
