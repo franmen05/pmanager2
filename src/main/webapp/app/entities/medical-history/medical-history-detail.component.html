@@ -5,27 +5,32 @@
 
             <hr>
 
+
+
             <jhi-alert-error></jhi-alert-error>
 
             <dl class="row-md jh-entity-details">
-                <dt><span>Comment</span></dt>
-                <dd>
-                    <span>{{ medicalHistory.comment }}</span>
-                </dd>
-                <dt><span>Create Date</span></dt>
-                <dd>
-                    <span>{{ medicalHistory.createDate }}</span>
-                </dd>
-                <dt><span>Last Update Date</span></dt>
-                <dd>
-                    <span>{{ medicalHistory.lastUpdateDate }}</span>
-                </dd>
-                <dt><span>Record</span></dt>
-                <dd>
-                    <div *ngIf="medicalHistory.record">
-                        <a [routerLink]="['/record', medicalHistory.record?.id, 'view']">{{ medicalHistory.record?.id }}</a>
-                    </div>
-                </dd>
+                <div *ngFor="let obj of medicalHistories ">
+                    <dt><span>Comment</span></dt>
+                    <dd>
+                        <span>{{ obj.question }}</span>
+                    </dd>
+                </div>
+
+<!--                <dt><span>Create Date</span></dt>-->
+<!--                <dd>-->
+<!--                    <span>{{ medicalHistory.createDate }}</span>-->
+<!--                </dd>-->
+<!--                <dt><span>Last Update Date</span></dt>-->
+<!--                <dd>-->
+<!--                    <span>{{ medicalHistory.lastUpdateDate }}</span>-->
+<!--                </dd>-->
+<!--                <dt><span>Record</span></dt>-->
+<!--                <dd>-->
+<!--                    <div *ngIf="medicalHistory.record">-->
+<!--                        <a [routerLink]="['/record', medicalHistory.record?.id, 'view']">{{ medicalHistory.record?.id }}</a>-->
+<!--                    </div>-->
+<!--                </dd>-->
             </dl>
 
             <button type="submit"

@@ -53,7 +53,7 @@ export const medicalHistoryRoute: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
-    path: ':id/view',
+    path: ':idRecord/view',
     component: MedicalHistoryDetailComponent,
     resolve: {
       medicalHistory: MedicalHistoryResolve,

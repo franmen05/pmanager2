@@ -33,7 +33,7 @@
             <tbody>
                 <tr *ngFor="let medicalHistory of medicalHistories ;trackBy: trackId">
                     <td><a [routerLink]="['/medical-history', medicalHistory.id, 'view']">{{ medicalHistory.id }}</a></td>
-                    <td>{{ medicalHistory.comment }}</td>
+                    <td>{{ medicalHistory.question }}</td>
                     <td>{{ medicalHistory.createDate | date:'medium' }}</td>
                     <td>{{ medicalHistory.lastUpdateDate | date:'medium' }}</td>
                     <td>

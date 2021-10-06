@@ -17,19 +17,25 @@ export class MedicalHistoryService {
 
   constructor(protected http: HttpClient) {}
 
-  create(medicalHistory: IMedicalHistory): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(medicalHistory);
+  createAll(medicalHistory: IMedicalHistory[]): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClientAll(medicalHistory);
     return this.http
       .post<IMedicalHistory>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
-
+  create(medicalHistory: IMedicalHistory): Observable<EntityResponseType> {
+    const copy = this.convertDateFromClient(medicalHistory);
+    return this.http
+      .post<IMedicalHistory>(this.resourceUrl, copy.record?.medicalHistories, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
   update(medicalHistory: IMedicalHistory): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(medicalHistory);
     return this.http
       .put<IMedicalHistory>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
+
   findByRecord(id: number): Observable<EntityResponseType> {
     // const options = createRequestOption(req);
     return this.http
@@ -41,6 +47,12 @@ export class MedicalHistoryService {
     return this.http
       .get<IMedicalHistory>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
+  findAll(id: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IMedicalHistory[]>(`${this.resourceUrl}/record/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
@@ -61,6 +73,16 @@ export class MedicalHistoryService {
         medicalHistory.lastUpdateDate && medicalHistory.lastUpdateDate.isValid() ? medicalHistory.lastUpdateDate.toJSON() : undefined,
     });
     return copy;
+  }
+  protected convertDateFromClientAll(medicalHistory: IMedicalHistory[]): IMedicalHistory[] {
+    // const copy: IMedicalHistory = Object.assign({}, medicalHistory, {
+    //   createDate: medicalHistory.createDate && medicalHistory.createDate.isValid() ? medicalHistory.createDate.toJSON() : undefined,
+    //   lastUpdateDate:
+    //     medicalHistory.lastUpdateDate && medicalHistory.lastUpdateDate.isValid() ? medicalHistory.lastUpdateDate.toJSON() : undefined,
+    // });
+    // return copy;
+
+    return medicalHistory.map(value => this.convertDateFromClient(value));
   }
 
   protected convertDateFromServer(res: EntityResponseType): EntityResponseType {

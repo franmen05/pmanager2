@@ -1,6 +1,7 @@
 package com.pmanager.web.rest;
 
 import com.pmanager.domain.MedicalHistory;
+import com.pmanager.domain.Record;
 import com.pmanager.service.MedicalHistoryService;
 import com.pmanager.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,7 +44,7 @@ public class MedicalHistoryResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new medicalHistory, or with status {@code 400 (Bad Request)} if the medicalHistory has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/medical-histories")
+    @PostMapping("/medical-history")
     public ResponseEntity<MedicalHistory> createMedicalHistory(@Valid @RequestBody MedicalHistory medicalHistory)
         throws URISyntaxException {
         log.debug("REST request to save MedicalHistory : {}", medicalHistory);
@@ -53,6 +55,25 @@ public class MedicalHistoryResource {
         return ResponseEntity
             .created(new URI("/api/medical-histories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/medical-histories")
+    public ResponseEntity<List<MedicalHistory>> createMedicalHistory(@Valid @RequestBody List<MedicalHistory> medicalHistory)
+        throws URISyntaxException {
+        log.debug("REST request to save MedicalHistory : {}", medicalHistory);
+        //        if (medicalHistory.getId() != null) {
+        //            throw new BadRequestAlertException("A new medicalHistory cannot already have an ID", ENTITY_NAME, "idexists");
+        //        }
+        val result = medicalHistoryService.saveAll(medicalHistory);
+        val id = result
+            .stream()
+            .findFirst()
+            .map(medicalHistory1 -> medicalHistory1.getRecord().getId())
+            .orElseThrow(() -> new BadRequestAlertException("Can't save medical history ", "", ""));
+        return ResponseEntity
+            .created(new URI("/api/medical-histories/" + id))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .body(result);
     }
 
@@ -103,11 +124,22 @@ public class MedicalHistoryResource {
         return ResponseUtil.wrapOrNotFound(medicalHistory);
     }
 
+    //    @GetMapping("/medical-histories-all/{id}")
+    //    public ResponseEntity<List<MedicalHistory>> getAllMedicalHistory(@PathVariable Long id) {
+    //        log.debug("REST request to get MedicalHistory : {}", id);
+    //        val medicalHistory = medicalHistoryService.findOne(id);
+    //        return ResponseUtil.wrapOrNotFound(medicalHistory);
+    //    }
+
     @GetMapping("/medical-histories/record/{id}")
-    public ResponseEntity<MedicalHistory> getMedicalHistoryByRecord(@PathVariable Long id) {
+    public List<MedicalHistory> getMedicalHistoryByRecord(@PathVariable Long id) {
         log.debug("REST request to get MedicalHistory : {}", id);
-        Optional<MedicalHistory> medicalHistory = medicalHistoryService.findByRecord(id);
-        return ResponseUtil.wrapOrNotFound(medicalHistory);
+        //        val medicalHistory =
+        //        return ResponseEntity
+        //            .created(new URI("/api/medical-histories/" + id))
+        //            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, id.toString()))
+        //            .body(medicalHistory);
+        return medicalHistoryService.findByRecord(id);
     }
 
     /**

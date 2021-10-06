@@ -4,20 +4,22 @@ import { IRecord } from 'app/shared/model/record.model';
 
 export interface IMedicalHistory {
   id?: number;
-  comment?: string;
+  question?: string;
+  answer?: string[];
   createDate?: Moment;
   lastUpdateDate?: Moment;
-  medicalHistories?: IMedicalHistoryConfig[];
+  // medicalHistories?: IMedicalHistoryConfig[];
   record?: IRecord;
 }
 
 export class MedicalHistory implements IMedicalHistory {
   constructor(
     public id?: number,
-    public comment?: string,
+    public question?: string,
+    public answer?: string[],
     public createDate?: Moment,
     public lastUpdateDate?: Moment,
-    public medicalHistories?: IMedicalHistoryConfig[],
+    // public medicalHistories?: IMedicalHistoryConfig[],
     public record?: IRecord
   ) {}
 }

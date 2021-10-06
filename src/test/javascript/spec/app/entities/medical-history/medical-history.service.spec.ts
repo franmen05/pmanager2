@@ -72,7 +72,7 @@ describe('Service Tests', () => {
       it('should update a MedicalHistory', () => {
         const returnedFromService = Object.assign(
           {
-            comment: 'BBBBBB',
+            question: 'BBBBBB',
             createDate: currentDate.format(DATE_TIME_FORMAT),
             lastUpdateDate: currentDate.format(DATE_TIME_FORMAT),
           },
@@ -97,7 +97,7 @@ describe('Service Tests', () => {
       it('should return a list of MedicalHistory', () => {
         const returnedFromService = Object.assign(
           {
-            comment: 'BBBBBB',
+            question: 'BBBBBB',
             createDate: currentDate.format(DATE_TIME_FORMAT),
             lastUpdateDate: currentDate.format(DATE_TIME_FORMAT),
           },

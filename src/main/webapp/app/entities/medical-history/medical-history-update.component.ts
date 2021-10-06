@@ -11,6 +11,8 @@ import { IMedicalHistory, MedicalHistory } from 'app/shared/model/medical-histor
 import { MedicalHistoryService } from './medical-history.service';
 import { IRecord, Record } from 'app/shared/model/record.model';
 import { RecordService } from 'app/entities/record/record.service';
+import { MedicalHistoryConfigService } from '../medical-history-config/medical-history-config.service';
+import { IMedicalHistoryConfig, MedicalHistoryConfig } from '../../shared/model/medical-history-config.model';
 
 @Component({
   selector: 'jhi-medical-history-update',
@@ -20,10 +22,13 @@ export class MedicalHistoryUpdateComponent implements OnInit {
   isSaving = false;
   isFromPatientModule = false;
   records: IRecord[] = [];
+  medicalHistoryConfigs?: IMedicalHistoryConfig[];
+  medicalHistories: MedicalHistory[] = [];
 
   editForm = this.fb.group({
     id: [],
-    comment: [null, [Validators.required]],
+    question: null,
+    answer: null,
     createDate: [],
     lastUpdateDate: [null, [Validators.required]],
     record: [],
@@ -31,6 +36,7 @@ export class MedicalHistoryUpdateComponent implements OnInit {
 
   constructor(
     protected medicalHistoryService: MedicalHistoryService,
+    protected medicalHistoryConfigService: MedicalHistoryConfigService,
     protected recordService: RecordService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -57,13 +63,17 @@ export class MedicalHistoryUpdateComponent implements OnInit {
         this.recordService.query().subscribe((res: HttpResponse<IRecord[]>) => (this.records = res.body || []));
         this.updateForm(medicalHistory);
       }
+
+      this.medicalHistoryConfigService
+        .query()
+        .subscribe((res: HttpResponse<IMedicalHistoryConfig[]>) => (this.medicalHistoryConfigs = res.body || []));
     });
   }
 
   updateForm(medicalHistory: IMedicalHistory): void {
     this.editForm.patchValue({
       id: medicalHistory.id,
-      comment: medicalHistory.comment,
+      answer: medicalHistory.answer,
       createDate: medicalHistory.createDate ? medicalHistory.createDate.format(DATE_TIME_FORMAT) : null,
       lastUpdateDate: medicalHistory.lastUpdateDate ? medicalHistory.lastUpdateDate.format(DATE_TIME_FORMAT) : null,
       record: medicalHistory.record,
@@ -71,24 +81,37 @@ export class MedicalHistoryUpdateComponent implements OnInit {
   }
 
   previousState(): void {
-    window.history.back();
+    console.debug(this.editForm.value);
+    // window.history.back();
   }
 
   save(): void {
     this.isSaving = true;
     const medicalHistory = this.createFromForm();
+    const medicalHistoriesForSave = this.medicalHistories.map(value => {
+      value.record = new Record();
+      value.record.id = medicalHistory.record?.id;
+      value.record.patient = medicalHistory.record?.patient;
+      return value;
+    });
+    console.debug(medicalHistoriesForSave);
+
+    if (medicalHistory.record) medicalHistory.record.medicalHistories = this.medicalHistories;
+
     if (medicalHistory.id !== undefined) {
-      this.subscribeToSaveResponse(this.medicalHistoryService.update(medicalHistory));
+      // this.subscribeToSaveResponse(this.medicalHistoryService.update(medicalHistory));
     } else {
-      this.subscribeToSaveResponse(this.medicalHistoryService.create(medicalHistory));
+      this.subscribeToSaveResponse(this.medicalHistoryService.createAll(medicalHistoriesForSave));
     }
   }
 
   private createFromForm(): IMedicalHistory {
+    console.debug(this.editForm);
     return {
       ...new MedicalHistory(),
       id: this.editForm.get(['id'])!.value,
-      comment: this.editForm.get(['comment'])!.value,
+      question: this.editForm.get(['question'])!.value,
+      answer: this.editForm.get(['answer'])!.value,
       createDate: this.editForm.get(['createDate'])!.value ? moment(this.editForm.get(['createDate'])!.value, DATE_TIME_FORMAT) : undefined,
       lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
         ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
@@ -103,12 +126,35 @@ export class MedicalHistoryUpdateComponent implements OnInit {
       () => this.onSaveError()
     );
   }
+
   protected onSaveSuccess(a: any): void {
     console.debug(a);
     this.isSaving = false;
     this.isFromPatientModule = false;
     // this.previousState();
-    this.router.navigate([`/record-item/patient/${a.body.record.patient.id}`]);
+    this.router.navigate([`/record-item/patient/${a.body[0].record.patient.id}`]);
+  }
+
+  public onChange(event: any, historyConfig: MedicalHistoryConfig): void {
+    // debugger;
+
+    const index = this.medicalHistories.findIndex(v => v.question === historyConfig.description);
+    if (index === -1)
+      this.medicalHistories.push({
+        question: historyConfig.description,
+        answer: event.value,
+        createDate: this.editForm.get(['createDate'])!.value
+          ? moment(this.editForm.get(['createDate'])!.value, DATE_TIME_FORMAT)
+          : undefined,
+        lastUpdateDate: this.editForm.get(['lastUpdateDate'])!.value
+          ? moment(this.editForm.get(['lastUpdateDate'])!.value, DATE_TIME_FORMAT)
+          : undefined,
+        // record:this.editForm.get(['record'])!.valu
+      });
+    else this.medicalHistories[index].answer = event.value;
+
+    console.debug(index);
+    console.debug(this.medicalHistories);
   }
 
   protected onSaveError(): void {

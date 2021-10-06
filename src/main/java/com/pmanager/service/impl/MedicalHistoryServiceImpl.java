@@ -31,6 +31,12 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
     }
 
     @Override
+    public List<MedicalHistory> saveAll(List<MedicalHistory> medicalHistory) {
+        log.debug("Request to save MedicalHistory : {}", medicalHistory);
+        return medicalHistoryRepository.saveAll(medicalHistory);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<MedicalHistory> findAll() {
         log.debug("Request to get all MedicalHistories");
@@ -44,11 +50,18 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
         return medicalHistoryRepository.findById(id);
     }
 
+    //    @Override
+    //    @Transactional(readOnly = true)
+    //    public List<MedicalHistory> findAll(Long id) {
+    //        log.debug("Request to get MedicalHistory : {}", id);
+    //        return medicalHistoryRepository.findByRecordId(id);
+    //    }
+
     @Override
     @Transactional(readOnly = true)
-    public Optional<MedicalHistory> findByRecord(Long id) {
+    public List<MedicalHistory> findByRecord(Long id) {
         log.debug("Request to get MedicalHistory : {}", id);
-        return medicalHistoryRepository.findByRecordId(id).stream().findFirst();
+        return medicalHistoryRepository.findByRecordId(id);
     }
 
     @Override

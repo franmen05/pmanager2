@@ -15,6 +15,7 @@ public interface MedicalHistoryService {
      * @return the persisted entity.
      */
     MedicalHistory save(MedicalHistory medicalHistory);
+    List<MedicalHistory> saveAll(List<MedicalHistory> medicalHistory);
 
     /**
      * Get all the medicalHistories.
@@ -22,6 +23,7 @@ public interface MedicalHistoryService {
      * @return the list of entities.
      */
     List<MedicalHistory> findAll();
+    //    List<MedicalHistory> findAll(Long id);
 
     /**
      * Get the "id" medicalHistory.
@@ -30,7 +32,7 @@ public interface MedicalHistoryService {
      * @return the entity.
      */
     Optional<MedicalHistory> findOne(Long id);
-    Optional<MedicalHistory> findByRecord(Long id);
+    List<MedicalHistory> findByRecord(Long id);
 
     /**
      * Delete the "id" medicalHistory.

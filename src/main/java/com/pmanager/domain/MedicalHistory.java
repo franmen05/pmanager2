@@ -3,10 +3,11 @@ package com.pmanager.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * A MedicalHistory.
@@ -21,8 +22,14 @@ public class MedicalHistory implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "comment", nullable = false)
-    private String comment;
+    @Column(name = "question", nullable = false)
+    private String question;
+
+    //    @NotNull
+    @Getter
+    @Setter
+    @Column(name = "answer", nullable = false)
+    private String answer;
 
     @Column(name = "create_date")
     private Instant createDate;
@@ -31,12 +38,11 @@ public class MedicalHistory implements Serializable {
     @Column(name = "last_update_date", nullable = false)
     private Instant lastUpdateDate;
 
-    //
     //    @OneToMany(mappedBy = "medicalHistory")
     //    private Set<MedicalHistoryConfig> medicalHistories = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = "medicalHistories", allowSetters = true)
+    @JsonIgnoreProperties(value = "medicalHistories")
     private Record record;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -48,17 +54,17 @@ public class MedicalHistory implements Serializable {
         this.id = id;
     }
 
-    public String getComment() {
-        return comment;
+    public String getQuestion() {
+        return question;
     }
 
-    public MedicalHistory comment(String comment) {
-        this.comment = comment;
+    public MedicalHistory question(String question) {
+        this.question = question;
         return this;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setQuestion(String s) {
+        this.question = s;
     }
 
     public Instant getCreateDate() {
@@ -127,20 +133,33 @@ public class MedicalHistory implements Serializable {
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
+    //    @Override
+    //    public boolean equals(Object o) {
+    //        if (this == o) {
+    //            return true;
+    //        }
+    //        if (!(o instanceof MedicalHistory)) {
+    //            return false;
+    //        }
+    //        return id != null && id.equals(((MedicalHistory) o).id);
+    //    }
+    //
+    //    @Override
+    //    public int hashCode() {
+    //        return 31;
+    //    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof MedicalHistory)) {
-            return false;
-        }
-        return id != null && id.equals(((MedicalHistory) o).id);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalHistory that = (MedicalHistory) o;
+        return Objects.equals(id, that.id) && question.equals(that.question) && answer.equals(that.answer);
     }
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(id, question, answer);
     }
 
     // prettier-ignore
@@ -148,7 +167,7 @@ public class MedicalHistory implements Serializable {
     public String toString() {
         return "MedicalHistory{" +
             "id=" + getId() +
-            ", comment='" + getComment() + "'" +
+            ", question='" + getQuestion() + "'" +
             ", createDate='" + getCreateDate() + "'" +
             ", lastUpdateDate='" + getLastUpdateDate() + "'" +
             "}";

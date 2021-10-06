@@ -31,7 +31,7 @@ public class MedicalHistoryConfig implements Serializable {
     //    @Getter
     //    @Setter
     //    @NotNull
-    @Column(name = "jhi_type", nullable = false)
+    @Column(name = "jhi_type", nullable = true)
     private String type;
 
     @Column(name = "create_date")

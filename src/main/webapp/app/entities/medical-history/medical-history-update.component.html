@@ -11,14 +11,14 @@
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" for="field_comment">Comment</label>
-                    <input type="text" class="form-control" name="comment" id="field_comment"
-                           formControlName="comment"/>
-                    <div *ngIf="editForm.get('comment')!.invalid && (editForm.get('comment')!.dirty || editForm.get('comment')!.touched)">
+                <div *ngFor="let medicalHistoryConfig of medicalHistoryConfigs " class="form-group">
+                    <label class="form-control-label" for="field_answer{{medicalHistoryConfig.id}}">{{medicalHistoryConfig.description}}</label>
+                    <input type="hidden" name="question"  formControlName="question" [(ngModel)]="isSaving"/>
+                    <input type="text" class="form-control" name="answer{{medicalHistoryConfig.id}}" id="field_answer{{medicalHistoryConfig.id}}" (change)="onChange($event.target,medicalHistoryConfig)" formControlName="answer"/>
+                    <div *ngIf="editForm.get('answer')!.invalid && (editForm.get('answer')!.dirty || editForm.get('answer')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('comment')?.errors?.required">
-                        This field is required.
+                               *ngIf="editForm.get('answer')?.errors?.required">
+                        This field is required.medical-histories
                         </small>
                     </div>
                 </div>

@@ -1,10 +1,18 @@
 package com.pmanager.web.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.pmanager.PmanagerApp;
 import com.pmanager.domain.MedicalHistory;
 import com.pmanager.repository.MedicalHistoryRepository;
 import com.pmanager.service.MedicalHistoryService;
-
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Integration tests for the {@link MedicalHistoryResource} REST controller.
@@ -31,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser
 public class MedicalHistoryResourceIT {
-
     private static final String DEFAULT_COMMENT = "AAAAAAAAAA";
     private static final String UPDATED_COMMENT = "BBBBBBBBBB";
 
@@ -63,11 +61,12 @@ public class MedicalHistoryResourceIT {
      */
     public static MedicalHistory createEntity(EntityManager em) {
         MedicalHistory medicalHistory = new MedicalHistory()
-            .comment(DEFAULT_COMMENT)
+            .question(DEFAULT_COMMENT)
             .createDate(DEFAULT_CREATE_DATE)
             .lastUpdateDate(DEFAULT_LAST_UPDATE_DATE);
         return medicalHistory;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -76,7 +75,7 @@ public class MedicalHistoryResourceIT {
      */
     public static MedicalHistory createUpdatedEntity(EntityManager em) {
         MedicalHistory medicalHistory = new MedicalHistory()
-            .comment(UPDATED_COMMENT)
+            .question(UPDATED_COMMENT)
             .createDate(UPDATED_CREATE_DATE)
             .lastUpdateDate(UPDATED_LAST_UPDATE_DATE);
         return medicalHistory;
@@ -92,16 +91,19 @@ public class MedicalHistoryResourceIT {
     public void createMedicalHistory() throws Exception {
         int databaseSizeBeforeCreate = medicalHistoryRepository.findAll().size();
         // Create the MedicalHistory
-        restMedicalHistoryMockMvc.perform(post("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(medicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                post("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(medicalHistory))
+            )
             .andExpect(status().isCreated());
 
         // Validate the MedicalHistory in the database
         List<MedicalHistory> medicalHistoryList = medicalHistoryRepository.findAll();
         assertThat(medicalHistoryList).hasSize(databaseSizeBeforeCreate + 1);
         MedicalHistory testMedicalHistory = medicalHistoryList.get(medicalHistoryList.size() - 1);
-        assertThat(testMedicalHistory.getComment()).isEqualTo(DEFAULT_COMMENT);
+        assertThat(testMedicalHistory.getQuestion()).isEqualTo(DEFAULT_COMMENT);
         assertThat(testMedicalHistory.getCreateDate()).isEqualTo(DEFAULT_CREATE_DATE);
         assertThat(testMedicalHistory.getLastUpdateDate()).isEqualTo(DEFAULT_LAST_UPDATE_DATE);
     }
@@ -115,9 +117,12 @@ public class MedicalHistoryResourceIT {
         medicalHistory.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
-        restMedicalHistoryMockMvc.perform(post("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(medicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                post("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(medicalHistory))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the MedicalHistory in the database
@@ -125,20 +130,21 @@ public class MedicalHistoryResourceIT {
         assertThat(medicalHistoryList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
     public void checkCommentIsRequired() throws Exception {
         int databaseSizeBeforeTest = medicalHistoryRepository.findAll().size();
         // set the field null
-        medicalHistory.setComment(null);
+        medicalHistory.setQuestion(null);
 
         // Create the MedicalHistory, which fails.
 
-
-        restMedicalHistoryMockMvc.perform(post("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(medicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                post("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(medicalHistory))
+            )
             .andExpect(status().isBadRequest());
 
         List<MedicalHistory> medicalHistoryList = medicalHistoryRepository.findAll();
@@ -154,10 +160,12 @@ public class MedicalHistoryResourceIT {
 
         // Create the MedicalHistory, which fails.
 
-
-        restMedicalHistoryMockMvc.perform(post("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(medicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                post("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(medicalHistory))
+            )
             .andExpect(status().isBadRequest());
 
         List<MedicalHistory> medicalHistoryList = medicalHistoryRepository.findAll();
@@ -171,7 +179,8 @@ public class MedicalHistoryResourceIT {
         medicalHistoryRepository.saveAndFlush(medicalHistory);
 
         // Get all the medicalHistoryList
-        restMedicalHistoryMockMvc.perform(get("/api/medical-histories?sort=id,desc"))
+        restMedicalHistoryMockMvc
+            .perform(get("/api/medical-histories?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(medicalHistory.getId().intValue())))
@@ -179,7 +188,7 @@ public class MedicalHistoryResourceIT {
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastUpdateDate").value(hasItem(DEFAULT_LAST_UPDATE_DATE.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getMedicalHistory() throws Exception {
@@ -187,7 +196,8 @@ public class MedicalHistoryResourceIT {
         medicalHistoryRepository.saveAndFlush(medicalHistory);
 
         // Get the medicalHistory
-        restMedicalHistoryMockMvc.perform(get("/api/medical-histories/{id}", medicalHistory.getId()))
+        restMedicalHistoryMockMvc
+            .perform(get("/api/medical-histories/{id}", medicalHistory.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(medicalHistory.getId().intValue()))
@@ -195,12 +205,12 @@ public class MedicalHistoryResourceIT {
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()))
             .andExpect(jsonPath("$.lastUpdateDate").value(DEFAULT_LAST_UPDATE_DATE.toString()));
     }
+
     @Test
     @Transactional
     public void getNonExistingMedicalHistory() throws Exception {
         // Get the medicalHistory
-        restMedicalHistoryMockMvc.perform(get("/api/medical-histories/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+        restMedicalHistoryMockMvc.perform(get("/api/medical-histories/{id}", Long.MAX_VALUE)).andExpect(status().isNotFound());
     }
 
     @Test
@@ -215,21 +225,21 @@ public class MedicalHistoryResourceIT {
         MedicalHistory updatedMedicalHistory = medicalHistoryRepository.findById(medicalHistory.getId()).get();
         // Disconnect from session so that the updates on updatedMedicalHistory are not directly saved in db
         em.detach(updatedMedicalHistory);
-        updatedMedicalHistory
-            .comment(UPDATED_COMMENT)
-            .createDate(UPDATED_CREATE_DATE)
-            .lastUpdateDate(UPDATED_LAST_UPDATE_DATE);
+        updatedMedicalHistory.question(UPDATED_COMMENT).createDate(UPDATED_CREATE_DATE).lastUpdateDate(UPDATED_LAST_UPDATE_DATE);
 
-        restMedicalHistoryMockMvc.perform(put("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedMedicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                put("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedMedicalHistory))
+            )
             .andExpect(status().isOk());
 
         // Validate the MedicalHistory in the database
         List<MedicalHistory> medicalHistoryList = medicalHistoryRepository.findAll();
         assertThat(medicalHistoryList).hasSize(databaseSizeBeforeUpdate);
         MedicalHistory testMedicalHistory = medicalHistoryList.get(medicalHistoryList.size() - 1);
-        assertThat(testMedicalHistory.getComment()).isEqualTo(UPDATED_COMMENT);
+        assertThat(testMedicalHistory.getQuestion()).isEqualTo(UPDATED_COMMENT);
         assertThat(testMedicalHistory.getCreateDate()).isEqualTo(UPDATED_CREATE_DATE);
         assertThat(testMedicalHistory.getLastUpdateDate()).isEqualTo(UPDATED_LAST_UPDATE_DATE);
     }
@@ -240,9 +250,12 @@ public class MedicalHistoryResourceIT {
         int databaseSizeBeforeUpdate = medicalHistoryRepository.findAll().size();
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restMedicalHistoryMockMvc.perform(put("/api/medical-histories")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(medicalHistory)))
+        restMedicalHistoryMockMvc
+            .perform(
+                put("/api/medical-histories")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(medicalHistory))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the MedicalHistory in the database
@@ -259,8 +272,8 @@ public class MedicalHistoryResourceIT {
         int databaseSizeBeforeDelete = medicalHistoryRepository.findAll().size();
 
         // Delete the medicalHistory
-        restMedicalHistoryMockMvc.perform(delete("/api/medical-histories/{id}", medicalHistory.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restMedicalHistoryMockMvc
+            .perform(delete("/api/medical-histories/{id}", medicalHistory.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
